@@ -1,0 +1,68 @@
+paths:
+  /user/create:                # path of the user from your endpoint
+    post:                 # endpoint request type (post request)
+      tags:               # Tag property
+        - Users         # Value of the tag
+      summary: Creates a new user
+      produces:
+      - application/json
+      parameters:         # request parameters
+      - in: body          # request body
+        name: User     # name of request, can be any name
+        description: User Added to Users collection and is also added to the employees collection of the company provided in NewUser, if no "company" key is found the user is added to the company of the user that made the request.
+        required: true   # can also be true depending on user preference
+        schema:           # Schema definition
+          type: object
+          properties:
+            user:
+              $ref: '#/definitions/NewUser'
+      responses:          # server responses
+        200:
+          description: Returns the user created
+          schema:
+            $ref: '#/definitions/User'
+      security: 
+        - Authorization: []
+
+definitions:        # Schema defination for request body
+  User:
+    type: object
+    properties: 
+      _id: 
+        type: string
+        uniqueItems: true
+      name:
+        type: string
+      lastName:
+        type: string
+      email:
+        type: string
+        uniqueItems: true
+      documentId:
+        type: string
+      phone:
+        type: string
+      company:
+        type: string
+      groups:
+        type: array
+        items:
+          type: string
+      profiles: 
+        type: array
+        items:
+          type: string
+      image:
+        type: string
+      createdAt:
+        type: date
+        readOnly: true
+      createdBy:
+        type: string
+        readOnly: true
+      modifiedAt:
+        type: date
+        readOnly: true
+      modifiedBy:
+        type: string
+        readOnly: true

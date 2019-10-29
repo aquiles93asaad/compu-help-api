@@ -1,0 +1,21 @@
+paths:
+  /computer/{id}:
+    get:
+      tags:
+        - Computers
+      summary: Finds a computer by its ID
+      produces:
+      - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ObjectID of the computer to get
+
+      responses:
+        200:
+          description: Returns the computer object if found
+          schema:
+            $ref: '#/definitions/Computer'

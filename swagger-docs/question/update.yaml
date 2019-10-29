@@ -1,0 +1,25 @@
+paths:
+  /question:
+    put:
+      tags:
+        - Questions
+      summary: Updates a question
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: Question Data
+        description: The question data to update. The type can be "simple", user can only choose one answer, or "multiple" where the user can choose n answers
+        required: true
+        schema:
+          type: object
+          properties:
+            question:
+              $ref: '#/definitions/Question'
+      responses:
+        200:
+          description: Returns the question updated
+          schema:
+            $ref: '#/definitions/Question'
+      security: 
+        - Authorization: []

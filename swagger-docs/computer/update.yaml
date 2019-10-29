@@ -1,0 +1,25 @@
+paths:
+  /computer:
+    put:
+      tags:
+        - Computers
+      summary: Updates a computer
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: Computer Data
+        description: The computer data to update. The type can be "simple", user can only choose one answer, or "multiple" where the user can choose n answers
+        required: true
+        schema:
+          type: object
+          properties:
+            computer:
+              $ref: '#/definitions/Computer'
+      responses:
+        200:
+          description: Returns the computer updated
+          schema:
+            $ref: '#/definitions/Computer'
+      security: 
+        - Authorization: []

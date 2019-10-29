@@ -1,0 +1,200 @@
+paths:
+  /computer:
+    post:
+      tags:
+        - Computers
+      summary: Creates a new computer
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: Computer Data
+        description: The computer data to create
+        required: true
+        schema:
+          type: object
+          properties:
+            computer:
+              $ref: '#/definitions/NewComputer'
+      responses:
+        200:
+          description: Returns the computer created
+          schema:
+            $ref: '#/definitions/Computer'
+      security: 
+        - Authorization: []
+
+definitions:
+  NewComputer:
+    type: object
+    required:
+      - name
+      - brand
+      - computerType
+      - specifications
+      - scores
+    properties: 
+      name:
+        type: string
+      brand:
+        type: string
+      computerType:
+        type: string
+      specifications:
+        $ref: '#/definitions/Specifications'
+      scores:
+        $ref: '#/definitions/ComputerScores'
+      availableAt:
+        type: array
+        items:
+          type: string
+
+  Computer:
+    type: object
+    properties:
+      _id:
+        type: string
+        uniqueItems: true
+        readOnly: true
+      name:
+        type: string
+      brand:
+        type: String,
+      availableAt:
+        type: array
+        items:
+          type: string
+      releaseDate:
+        type: date
+      computerType:
+          type: string
+      createdAt:
+        type: date
+        readOnly: true
+      createdBy:
+        type: string
+        readOnly: true
+      modifiedAt:
+        type: date
+        readOnly: true
+      modifiedBy:
+        type: string
+        readOnly: true
+
+  Specifications:
+    type: object
+    properties:
+      processor:
+        $ref: '#/definitions/ProcessorSpecifics'
+      memory:
+        $ref: '#/definitions/MemorySpecifics'
+      graphicsCard:
+        $ref: '#/definitions/GraphicsCardSpecifics'
+      connectivity:
+        $ref: '#/definitions/ConnectivitySpecifics'
+      battery:
+        $ref: '#/definitions/BatterySpecifics'
+      dimensions:
+        $ref: '#/definitions/DimensionsSpecifics'
+      storage:
+        type: string
+      operatingSystem:
+        type: string
+
+  ComputerScores:
+    type: object
+    properties:
+      processorMinScore:
+        type: number
+      processorMaxScore:
+        type: number
+      ramMinScore:
+        type: number
+      ramMaxScore:
+        type: number
+      storageMinScore:
+        type: number
+      storageMaxScore:
+        type: number
+      graphicsCardMinScore:
+        type: number
+      graphicsCardMaxScore:
+        type: number
+      batteryMinScore:
+        type: number
+      batteryMaxScore:
+        type: number
+
+  ProcessorSpecifics:
+    type: object
+    properties:
+      brand:
+        type: string
+      model:
+        type: string
+      version:
+        type: string
+      rate:
+        type: number
+
+  MemorySpecifics:
+    type: object
+    properties:
+      ram:
+        type: number
+      expandableRam:
+        type: number
+
+  GraphicsCardSpecifics:
+    type: object
+    properties:
+      processor:
+        type: string
+      memory:
+        type: number
+
+  ConnectivitySpecifics:
+    type: object
+    properties:
+      wifi:
+        type: boolean
+      bluetooth:
+        type: boolean
+      usb2Ports:
+        type: number
+      usb3Ports:
+        type: number
+      usbCPorts:
+        type: number
+      ethernetPort:
+        type: boolean
+      hdmiPort:
+        type: boolean
+      hdmiMiniPort:
+        type: boolean
+      vgaPort:
+        type: boolean
+      microphone:
+        type: boolean
+
+  BatterySpecifics:
+    type: object
+    properties:
+      duration:
+        type: number
+      restDuration:
+        type: number
+      isExpandible:
+        type: boolean
+
+  DimensionsSpecifics:
+    type: object
+    properties:
+      width:
+        type: number
+      height:
+        type: number
+      depth:
+        type: number
+      weight:
+        type: number

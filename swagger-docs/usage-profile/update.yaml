@@ -1,0 +1,25 @@
+paths:
+  /usage-profile:
+    put:
+      tags:
+        - Usage Profiles
+      summary: Updates a usageProfile
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: UsageProfile Data
+        description: The usageProfile data to update. questions must be an array of objectIds of the questions associated with this usage profile.
+        required: true
+        schema:
+          type: object
+          properties:
+            usageProfile:
+              $ref: '#/definitions/UsageProfile'
+      responses:
+        200:
+          description: Returns the usageProfile updated
+          schema:
+            $ref: '#/definitions/UsageProfile'
+      security: 
+        - Authorization: []

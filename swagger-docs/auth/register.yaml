@@ -1,0 +1,44 @@
+paths:
+  /auth/register:
+    post:
+      tags:
+        - Auth
+      summary: User auth registration details
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: Register User
+        description: Register a a new user to the platform.
+        required: true
+        schema:
+          type: object
+          properties:
+            user:
+              $ref: '#/definitions/NewUser'
+      responses:
+        200:
+          description: A new user is created
+          schema:
+            $ref: '#/definitions/User'
+
+definitions:
+  NewUser:
+    type: object
+    required:
+      - email
+      - name
+      - lastName
+      - password
+    properties: 
+      name:
+        type: string
+      lastName:
+        type: string
+      email:
+        type: string
+        uniqueItems: true
+      documentId:
+        type: string
+      password:
+        type: string

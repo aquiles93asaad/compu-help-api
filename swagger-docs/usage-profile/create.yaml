@@ -1,0 +1,68 @@
+paths:
+  /usage-profile:
+    post:
+      tags:
+        - Usage Profiles
+      summary: Creates a new usageProfile
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: UsageProfile Data
+        description: The usageProfile data to create. questions must be an array of objectIds of the questions associated with this usage profile.
+        required: true
+        schema:
+          type: object
+          properties:
+            usageProfile:
+              $ref: '#/definitions/NewUsageProfile'
+      responses:
+        200:
+          description: Returns the usageProfile created with the questions populated.
+          schema:
+            $ref: '#/definitions/UsageProfile'
+      security: 
+        - Authorization: []
+
+definitions:
+  NewUsageProfile:
+    type: object
+    required:
+      - name
+    properties: 
+      name:
+        type: string
+      description:
+        type: string
+      questions:
+        type: array
+        items:
+          type: string
+
+  UsageProfile:
+    type: object
+    properties:
+      _id:
+        type: string
+        uniqueItems: true
+        readOnly: true
+      name:
+        type: string
+      description:
+        type: string
+      questions:
+        type: array
+        items:
+          $ref: '#/definitions/Question'
+      createdAt:
+        type: date
+        readOnly: true
+      createdBy:
+        type: string
+        readOnly: true
+      modifiedAt:
+        type: date
+        readOnly: true
+      modifiedBy:
+        type: string
+        readOnly: true

@@ -1,0 +1,21 @@
+paths:
+  /question/{id}:
+    get:
+      tags:
+        - Questions
+      summary: Finds a question by its ID
+      produces:
+      - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ObjectID of the question to get
+
+      responses:
+        200:
+          description: Returns the question object if found
+          schema:
+            $ref: '#/definitions/Question'

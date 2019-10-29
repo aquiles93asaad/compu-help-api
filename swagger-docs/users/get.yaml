@@ -1,0 +1,22 @@
+paths:
+  /user/get:                # path of the user from your endpoint
+    get:                 # endpoint request type (post request)
+      tags:               # Tag property
+        - Users         # Value of the tag
+      summary: Finds a user by its ID
+      produces:
+      - application/json
+      parameters:         # request parameters
+        - in: query
+          name: userId
+          required: true
+          schema:
+            type: string
+
+      responses:          # server responses
+        200:
+          description: Returns the user object if found
+          schema:           # Schema definition
+            $ref: '#/definitions/User'
+      security: 
+        - Authorization: []

@@ -1,0 +1,87 @@
+paths:
+  /question:
+    post:
+      tags:
+        - Questions
+      summary: Creates a new question
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: Question Data
+        description: The question data to create. The type can be "simple", user can only choose one answer, or "multiple" where the user can choose n answers
+        required: true
+        schema:
+          type: object
+          properties:
+            question:
+              $ref: '#/definitions/NewQuestion'
+      responses:
+        200:
+          description: Returns the question created
+          schema:
+            $ref: '#/definitions/Question'
+      security: 
+        - Authorization: []
+
+definitions:
+  NewQuestion:
+    type: object
+    required:
+      - label
+      - questionType
+    properties: 
+      label:
+        type: string
+      questionType:
+        type: string
+      answers:
+        type: array
+        items:
+          $ref: '#/definitions/Answer'
+
+  Question:
+    type: object
+    properties:
+      _id:
+        type: string
+        uniqueItems: true
+        readOnly: true
+      label:
+        type: string
+      questionType:
+        type: string
+      answers:
+        type: array
+        items:
+          $ref: '#/definitions/Answer'
+      createdAt:
+        type: date
+        readOnly: true
+      createdBy:
+        type: string
+        readOnly: true
+      modifiedAt:
+        type: date
+        readOnly: true
+      modifiedBy:
+        type: string
+        readOnly: true
+
+  Answer:
+    type: object
+    properties:
+      label:
+        type: string
+      value:
+        type: string
+      procesorScore:
+        type: number
+      ramScore:
+        type: number
+      storageScore:
+        type: number
+      graphicsCardScore:
+        type: number
+      batteryScore:
+        type: number

@@ -1,0 +1,36 @@
+paths:
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: User auth login details.
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: Login Params
+        description: Sign in to the system creating a unique user token
+        required: true
+        schema:
+          $ref: '#/definitions/LoginBody'
+      responses:
+        200:
+          description: User has a valid token
+          schema:
+            type: object
+            properties:
+              user:
+                $ref: '#/definitions/User'
+              token: string
+
+definitions:
+  LoginBody:
+    type: object
+    required:
+      - email
+      - password
+    properties: 
+      email:
+        type: string
+      password:
+        type: string

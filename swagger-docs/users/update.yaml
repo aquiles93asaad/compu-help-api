@@ -1,0 +1,29 @@
+paths:
+  /user/update:                # path of the user from your endpoint
+    put:                 # endpoint request type (post request)
+      tags:               # Tag property
+        - Users         # Value of the tag
+      summary: Updates the user with the data sent in the body
+      produces:
+      - application/json
+      parameters:         # request parameters
+      - in: body          # request body
+        name: User Data
+        description: The user data to update with the _id of the mongoDB
+        required: true
+        schema:
+          type: object
+          properties:
+            user:
+              $ref: '#/definitions/User'
+
+      responses:          # server responses
+        200:
+          description: Returns the user update
+          schema:
+          type: object
+          properties:
+            user:
+              $ref: '#/definitions/User'
+      security: 
+        - Authorization: []

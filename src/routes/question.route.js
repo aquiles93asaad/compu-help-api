@@ -20,7 +20,6 @@ async function create(req, res) {
 }
 
 async function get(req, res) {
-    console.log(req.params);
     if(!req.params.id) {
         res.status(400);
         res.json({ error: "id param is mandatory"})

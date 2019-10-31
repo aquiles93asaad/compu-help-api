@@ -9,10 +9,6 @@
     "ng": "ng",
     "serve": "node server",
     "start": "concurrently -c \"yellow.bold,green.bold\" -n \"SERVER,BUILD\" \"nodemon server\"",
-    "build": "ng build --prod",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e",
     "run": "forever start --minUptime 1000 --spinSleepTime 1000 ./server/index.js"
   },
   "private": true,

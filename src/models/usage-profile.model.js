@@ -6,12 +6,12 @@ const UsageProfileSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    label: {
+        type: String,
+        required: true
+    },
     description: {
         type: String
-    },
-    questions: {
-        type: [Schema.Types.ObjectId],
-        ref: 'Question'
     },
     createdBy: {
         type: Schema.Types.ObjectId,
@@ -29,8 +29,16 @@ const UsageProfileSchema = new mongoose.Schema({
         type: Date
     }
 }, {
-    versionKey: false
+    versionKey: false,
+    toJSON: { virtuals: true }
 });
+
+UsageProfileSchema.virtual('questions', {
+    ref: 'Question',
+    localField: 'name',
+    foreignField: 'usageProfiles',
+    justOne: false
+})
 
 
 module.exports = mongoose.model('UsageProfile', UsageProfileSchema);

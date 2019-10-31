@@ -10,14 +10,17 @@ const QuestionSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    answers: {
+    answers: [{
         label: String,
-        value: String,
+        value: String | Boolean,
         procesorScore: Number,
         ramScore: Number,
         storageScore: Number,
         graphicsCardScore: Number,
         batteryScore: Number,
+    }],
+    usageProfiles: {
+        type: [String]
     },
     createdBy: {
         type: Schema.Types.ObjectId,

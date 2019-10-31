@@ -74,7 +74,7 @@ definitions:
       label:
         type: string
       value:
-        type: string
+        type: string | boolean
       procesorScore:
         type: number
       ramScore:

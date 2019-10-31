@@ -32,12 +32,10 @@ definitions:
     properties: 
       name:
         type: string
+      label:
+        type: string
       description:
         type: string
-      questions:
-        type: array
-        items:
-          type: string
 
   UsageProfile:
     type: object

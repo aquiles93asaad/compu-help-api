@@ -1,0 +1,29 @@
+{
+    "question": {
+        "label": "Necesitas que tenga procesamiento de imágenes?",
+        "questionType": "simple",
+        "answers": [
+            {
+                "label": "Si",
+                "value": true,
+                "procesorScore": 10,
+                "ramScore": 10,
+                "storageScore": 10,
+                "graphicsCardScore": 20,
+                "batteryScore": 0
+            },
+            {
+                "label": "No",
+                "value": false,
+                "procesorScore": 0,
+                "ramScore": 0,
+                "storageScore": 0,
+                "graphicsCardScore": 0,
+                "batteryScore": 0
+            }
+        ],
+        "usageProfiles": [
+            "design"
+        ]
+    }
+}

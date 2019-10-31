@@ -38,22 +38,8 @@ definitions:        # Schema defination for request body
       email:
         type: string
         uniqueItems: true
-      documentId:
-        type: string
-      phone:
-        type: string
-      company:
-        type: string
-      groups:
-        type: array
-        items:
-          type: string
-      profiles: 
-        type: array
-        items:
-          type: string
-      image:
-        type: string
+      esAdmin:
+        type: boolean
       createdAt:
         type: date
         readOnly: true

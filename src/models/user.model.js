@@ -25,6 +25,21 @@ const UserSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    createdBy: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    modifiedBy: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    modifiedAt: {
+        type: Date
+    }
 }, {
         versionKey: false
     });

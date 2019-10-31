@@ -24,7 +24,7 @@ async function get(id) {
     try {
         const usageProfile = await UsageProfile.findOne({
             '_id': id
-        });
+        }).populate('questions');
         return usageProfile;
     } catch(error) {
         console.log(error);
@@ -51,8 +51,24 @@ async function update(usageProfile) {
     }
 }
 
+/**
+ * searches for usageProfiles by the filters sent.
+ * @param id string - ObjectId
+ * @returns UsageProfile
+*/
+async function search(filters) {
+    try {
+        const usageProfiles = await UsageProfile.find(filters).populate('questions');
+        return usageProfiles;
+    } catch(error) {
+        console.log(error);
+        return error;
+    }
+}
+
 module.exports = {
     create,
     get,
     update,
+    search
 };

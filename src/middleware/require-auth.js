@@ -3,7 +3,6 @@ const _ = require('lodash');
 
 const requireAuthenticationList = [
     'POST /api/computer',
-    'GET /api/computer',
     'PUT /api/computer',
     'DELETE /api/computer',
     
@@ -13,12 +12,10 @@ const requireAuthenticationList = [
     'DELETE /api/notificacion',
 
     'POST /api/question',
-    'GET /api/question',
     'PUT /api/question',
     'DELETE /api/question',
 
     'POST /api/usage-profile',
-    'GET /api/usage-profile',
     'PUT /api/usage-profile',
     'DELETE /api/usage-profile',
 

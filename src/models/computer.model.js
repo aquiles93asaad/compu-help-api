@@ -37,7 +37,7 @@ const ComputerSchema = new mongoose.Schema({
         },
         memory: {
             ram: Number,
-            type: String,
+            ramType: String,
             speed: Number,
             expandableRam: Number
         },

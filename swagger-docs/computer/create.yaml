@@ -30,12 +30,15 @@ definitions:
     required:
       - name
       - brand
+      - model
       - computerType
       - specifications
     properties: 
       name:
         type: string
       brand:
+        type: string
+      model:
         type: string
       computerType:
         type: string
@@ -94,7 +97,7 @@ definitions:
       dimensions:
         $ref: '#/definitions/DimensionsSpecifics'
       storage:
-        type: '#/definitions/StorageSpecifics'
+        $ref: '#/definitions/StorageSpecifics'
       operatingSystem:
         type: string
 
@@ -120,7 +123,7 @@ definitions:
     properties:
       ram:
         type: number
-      type:
+      ramType:
         type: string
       speed:
         type: number
@@ -187,13 +190,12 @@ definitions:
       weight:
         type: number
 
-
-    StorageSpecifics:
-      type: object
-      properties:
-        space:
-          type: number
-        storageType:
-          type: string
-        speed:
-          type: number
+  StorageSpecifics:
+    type: object
+    properties:
+      space:
+        type: number
+      storageType:
+        type: string
+      speed:
+        type: number

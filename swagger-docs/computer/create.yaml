@@ -189,11 +189,11 @@ definitions:
 
 
     StorageSpecifics:
-    type: object
-    properties:
-      space:
-        type: number
-      storageType:
-        type: string
-      speed:
-        type: number
+      type: object
+      properties:
+        space:
+          type: number
+        storageType:
+          type: string
+        speed:
+          type: number

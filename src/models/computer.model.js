@@ -38,7 +38,7 @@ const ComputerSchema = new mongoose.Schema({
         memory: {
             ram: Number,
             type: String,
-            Speed: Number,
+            speed: Number,
             expandableRam: Number
         },
         graphicsCard: {
@@ -59,6 +59,11 @@ const ComputerSchema = new mongoose.Schema({
             vgaPort: Boolean,
             microphone: Boolean,
             webCam: Boolean
+        },
+        battery: {
+            duration: Number,
+            restDuration: Number,
+            isExpandible: Boolean
         },
         dimensions: {
             width: Number,

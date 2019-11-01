@@ -75,13 +75,19 @@ definitions:
         type: string
       value:
         type: string | boolean
-      procesorScore:
+      processorMinScore:
         type: number
-      ramScore:
+      processorMaxScore:
         type: number
-      storageScore:
+      ramMinScore:
         type: number
-      graphicsCardScore:
+      ramMaxScore:
         type: number
-      batteryScore:
+      storageMinScore:
+        type: number
+      storageMaxScore:
+        type: number
+      graphicsCardMinScore:
+        type: number
+      graphicsCardMaxScore:
         type: number

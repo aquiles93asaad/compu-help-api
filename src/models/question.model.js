@@ -13,11 +13,14 @@ const QuestionSchema = new mongoose.Schema({
     answers: [{
         label: String,
         value: String | Boolean,
-        procesorScore: Number,
-        ramScore: Number,
-        storageScore: Number,
-        graphicsCardScore: Number,
-        batteryScore: Number,
+        procesorMinScore: Number,
+        procesorMaxScore: Number,
+        ramMinScore: Number,
+        ramMaxScore: Number,
+        storageMinScore: Number,
+        storageMaxScore: Number,
+        graphicsCardMinScore: Number,
+        graphicsCardMaxScore: Number
     }],
     usageProfiles: {
         type: [String]

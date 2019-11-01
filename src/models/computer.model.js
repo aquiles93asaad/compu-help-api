@@ -8,11 +8,11 @@ const ComputerSchema = new mongoose.Schema({
     },
     brand: {
         type: String,
-        required: true,
+        required: true
     },
     model: {
         type: String,
-        required: true,
+        required: true
     },
     releaseDate: {
         type: Date
@@ -31,15 +31,21 @@ const ComputerSchema = new mongoose.Schema({
             brand: String,
             model: String,
             version: String,
-            rate: Number
+            rate: Number,
+            cores: Number,
+            cache: Number
         },
         memory: {
             ram: Number,
-            expandableRam: Number,
+            type: String,
+            Speed: Number,
+            expandableRam: Number
         },
         graphicsCard: {
-            processor: String,
-            memory: Number,
+            processorRate: Number,
+            ram: Number,
+            ramType: String,
+            brand: String
         },
         connectivity: {
             wifi: Boolean,
@@ -52,35 +58,26 @@ const ComputerSchema = new mongoose.Schema({
             hdmiMiniPort: Boolean,
             vgaPort: Boolean,
             microphone: Boolean,
-        },
-        battery: {
-            duration: Number,
-            restDuration: Number,
-            isExpandible: Boolean
+            webCam: Boolean
         },
         dimensions: {
             width: Number,
             height: Number,
             depth: Number,
-            weight: Number,
+            weight: Number
         },
         storage: {
             space: Number,
-            storageType: String
+            storageType: String,
+            speed: Number
         },
-        operatingSystem: String,
+        operatingSystem: String
     },
     scores: {
-        processorMinScore: Number,
-        processorMaxScore: Number,
-        ramMinScore: Number,
-        ramMaxScore: Number,
-        storageMinScore: Number,
-        storageMaxScore: Number,
-        graphicsCardMinScore: Number,
-        graphicsCardMaxScore: Number,
-        batteryMinScore: Number,
-        batteryMaxScore: Number
+        processorScore: Number,
+        ramScore: Number,
+        storageScore: Number,
+        graphicsCardScore: Number
     },
     createdBy: {
         type: Schema.Types.ObjectId,

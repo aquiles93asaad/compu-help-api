@@ -25,7 +25,8 @@ async function get(req, res) {
         res.status(400);
         res.json({ error: "id param is mandatory"})
     }
-    const computers = await computerCtrl.get(req.user, filters);
+    console.log("Valor: " + req.params.id);
+    const computers = await computerCtrl.get(req.params.id);
     res.json({ computers });
 }
 

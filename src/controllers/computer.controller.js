@@ -51,8 +51,39 @@ async function update(computer) {
     }
 }
 
+/**
+ * Get all computers
+ * @returns Array of Computer
+*/
+async function search() {
+    try {
+        const computers = await Computer.find({}); 
+        return computers;
+    } catch (error) {
+        console.log(error);
+        return error;
+    }
+}
+
+/**
+ * Get an array computers based on their scores
+ * @param filters Filters
+ * @returns Array of Computer
+*/
+async function searchByScore(filters) {
+    try {
+        const computers = await Computer.find(filters);
+        return computers;
+    } catch (error) {
+        console.log(error);
+        return error;
+    }
+}
+
 module.exports = {
     create,
     get,
     update,
+    search,
+    searchByScore
 };

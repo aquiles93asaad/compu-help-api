@@ -99,8 +99,9 @@ async function searchByScore(answers) {
         for(var i = 0;i < answers.length; i++) {
             filters = await updateFilters(filters, answers[i]);
         }
-        //return getComputerByFilters(filters);
-        return getComputerByFiltersQuery(filters);
+        //return getComputerByFilters(filters); prueba de concepto al filtro 
+        //return getComputerByFiltersQuery(filters); version 1
+        return getComputerByFiltersQueryMin(filters);//version por filtro.
     } catch (error) {
         console.log(error);
         return error;
@@ -152,6 +153,13 @@ async function getComputerByFiltersQuery(filters) {
     return computers;
 }
 
+async function getComputerByFiltersQueryMin(filters) {     
+    const computers = await Computer.find({"scores.processorScore":{$gte:filters.processorMinScore}
+    ,"scores.ramScore":{$gte:filters.ramMinScore},"scores.storageScore":{$gte:filters.storageMinScore}
+    ,"scores.graphicsCardScore":{$gte:filters.graphicsCardMinScore}
+    }).sort({"scores.processorScore":1,"scores.ramScore":1,"scores.storageScore":1,"scores.graphicsCardScore":1});
+    return computers;
+}
 /**
  * Generate computer's score based on the full specification.
  * @param computer

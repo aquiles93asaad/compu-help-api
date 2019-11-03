@@ -51,8 +51,23 @@ async function update(question) {
     }
 }
 
+/**
+ * Get all questions
+ * @returns Array of Question
+*/
+async function searchAll() {
+    try {
+        const questions = await Question.find({}); 
+        return questions;
+    } catch (error) {
+        console.log(error);
+        return error;
+    }
+}
+
 module.exports = {
     create,
     get,
     update,
+    searchAll,
 };

@@ -8,7 +8,8 @@ const requireAuth = require('../middleware/require-auth');
 router.use(requireAuth);
 
 router.route('').post(asyncHandler(create));
-router.route('/:id').get(asyncHandler(get));
+router.route('/searchAll').get(asyncHandler(searchAll));
+router.route('/:id').get(asyncHandler(search));
 router.route('').put(asyncHandler(update));
 //router.route('/:id').post(asyncHandler(remove));
 
@@ -43,4 +44,10 @@ async function update(req, res) {
 async function remove(req, res) {
     const question = await questionCtrl.update(req.body.question);
     res.json({ question });
+}
+
+async function searchAll(req, res) {
+    console.log("Entro")
+    const questions = await questionCtrl.searchAll();
+    res.json({ questions });
 }

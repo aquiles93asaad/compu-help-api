@@ -1,0 +1,14 @@
+paths:
+  /question/searchAll:
+    get:
+      tags:
+        - Questions
+      summary: Retrieves all questions
+      produces:
+      - application/json
+      
+      responses:
+        200:
+          description: Returns all questions
+          schema:
+			$ref: '#/definitions/QuestionList'

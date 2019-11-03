@@ -1,0 +1,34 @@
+paths:
+  /computer/search:
+    get:
+      tags:
+        - Computers
+      summary: Retrieves all computers
+      produces:
+      - application/json
+      
+      responses:
+        200:
+          description: Returns all computers
+          schema:
+            $ref: '#/definitions/ComputerList'
+
+  /computer/search-by-score:
+    post:
+      tags:
+        - Computers
+      summary: Retrieves a list of computers based on the score of the answers
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: Answers data
+        description: The list of answers and their scores
+        required: true
+        schema:
+          $ref: '#/definitions/AnswerList'
+      responses:
+        200:
+          description: Returns a list of computers
+          schema:
+            $ref: '#/definitions/ComputerList'

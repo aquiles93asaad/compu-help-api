@@ -69,12 +69,25 @@ async function search() {
 }
 
 /**
- * Get an array computers based on their scores
+ * Get an array of computers based on their scores
  * @param filters Filters
  * @returns Array of Computer
 */
-async function searchByScore(filters) {
+async function searchByScore(answers) {
     try {
+        var filters = {
+            "processorMinScore": 0,
+            "processorMaxScore": 0,
+            "ramMinScore": 0,
+            "ramMaxScore": 0,
+            "storageMinScore": 0,
+            "storageMaxScore": 0,
+            "graphicsCardMinScore": 0,
+            "graphicsCardMaxScore": 0
+        };
+        for(var i = 0;i < answers.length; i++) {
+            filters = await updateFilters(filters, answers[i]);
+        }
         const computers = await Computer.find(filters);
         return computers;
     } catch (error) {
@@ -83,7 +96,16 @@ async function searchByScore(filters) {
     }
 }
 
-
+function updateFilters(filters, answer) {
+    var fieldNames = Object.keys(answer);
+    for(var i = 0; i < fieldNames.length; i++) {
+        if (fieldNames[i] == "label" || fieldNames[i] == "value")
+            continue;
+        if (answer[fieldNames[i]] > filters[fieldNames[i]])
+            filters[fieldNames[i]] = answer[fieldNames[i]];
+    }
+    return filters;
+}
 
 /**
  * Generate computer's score based on the full specification.

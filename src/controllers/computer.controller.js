@@ -318,4 +318,6 @@ module.exports = {
     create,
     get,
     update,
+    search,
+    searchByScore
 };

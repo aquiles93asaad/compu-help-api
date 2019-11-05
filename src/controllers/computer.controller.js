@@ -39,7 +39,7 @@ async function searchFindQuestions(range) {
     try {
         const createdComputer = await Computer(computer).save();
         return createdComputer;
-    } catch(error) {
+    } catch (error) {
         console.log(error);
         return error;
     }
@@ -96,7 +96,7 @@ async function searchByScore(answers) {
             "graphicsCardMinScore": 0,
             "graphicsCardMaxScore": 0
         };
-        for(var i = 0;i < answers.length; i++) {
+        for (var i = 0; i < answers.length; i++) {
             filters = await updateFilters(filters, answers[i]);
         }
         //return getComputerByFilters(filters); prueba de concepto al filtro 
@@ -111,7 +111,7 @@ async function searchByScore(answers) {
 
 function updateFilters(filters, answer) {
     var fieldNames = Object.keys(answer);
-    for(var i = 0; i < fieldNames.length; i++) {
+    for (var i = 0; i < fieldNames.length; i++) {
         if (fieldNames[i] == "label" || fieldNames[i] == "value")
             continue;
         if (answer[fieldNames[i]] > filters[fieldNames[i]])
@@ -125,39 +125,43 @@ async function getComputerByFilters(filters) {
     const computersAux = await Computer.find({});
     var i = 0;
     computersAux.forEach(element => {
-        if(JSON.stringify(element.scores)!='{}'){
-        if(element.scores.processorScore >= filters.processorMinScore 
-            && element.scores.processorScore >= filters.processorMaxScore 
-            && element.scores.ramScore >= filters.ramMinScore 
-            && element.scores.ramScore >= filters.ramMaxScore
-            && element.scores.storageScore >= filters.storageMinScore 
-            && element.scores.storageScore >= filters.storageMaxScore
-            && element.scores.graphicsCardScore >= filters.graphicsCardMinScore 
-            && element.scores.graphicsCardScore >= filters.graphicsCardMaxScore){
-            computers[i] = element;
-            i++;
-        }   
+        if (JSON.stringify(element.scores) != '{}') {
+            if (element.scores.processorScore >= filters.processorMinScore
+                && element.scores.processorScore >= filters.processorMaxScore
+                && element.scores.ramScore >= filters.ramMinScore
+                && element.scores.ramScore >= filters.ramMaxScore
+                && element.scores.storageScore >= filters.storageMinScore
+                && element.scores.storageScore >= filters.storageMaxScore
+                && element.scores.graphicsCardScore >= filters.graphicsCardMinScore
+                && element.scores.graphicsCardScore >= filters.graphicsCardMaxScore) {
+                computers[i] = element;
+                i++;
+            }
         }
     });
     return computers;
 }
 
-async function getComputerByFiltersQuery(filters) {     
-    const computers = await Computer.find({"scores.processorScore":{$gte:filters.processorMinScore}
-    ,"scores.processorScore":{$gte:filters.processorMaxScore},"scores.ramScore":{$gte:filters.ramMinScore},
-    "scores.ramScore":{$gte:filters.ramMaxScore},"scores.storageScore":{$gte:filters.storageMinScore},
-    "scores.storageScore":{$gte:filters.storageMaxScore},
-    "scores.graphicsCardScore":{$gte:filters.graphicsCardMinScore},
-    "scores.graphicsCardScore":{$gte:filters.graphicsCardMaxScore}
+async function getComputerByFiltersQuery(filters) {
+    const computers = await Computer.find({
+        "scores.processorScore": { $gte: filters.processorMinScore },
+        "scores.processorScore": { $gte: filters.processorMaxScore },
+        "scores.ramScore": { $gte: filters.ramMinScore },
+        "scores.ramScore": { $gte: filters.ramMaxScore },
+        "scores.storageScore": { $gte: filters.storageMinScore },
+        "scores.storageScore": { $gte: filters.storageMaxScore },
+        "scores.graphicsCardScore": { $gte: filters.graphicsCardMinScore },
+        "scores.graphicsCardScore": { $gte: filters.graphicsCardMaxScore }
     });
     return computers;
 }
 
-async function getComputerByFiltersQueryMin(filters) {     
-    const computers = await Computer.find({"scores.processorScore":{$gte:filters.processorMinScore}
-    ,"scores.ramScore":{$gte:filters.ramMinScore},"scores.storageScore":{$gte:filters.storageMinScore}
-    ,"scores.graphicsCardScore":{$gte:filters.graphicsCardMinScore}
-    }).sort({"scores.processorScore":1,"scores.ramScore":1,"scores.storageScore":1,"scores.graphicsCardScore":1});
+async function getComputerByFiltersQueryMin(filters) {
+    const computers = await Computer.find({
+        "scores.processorScore": { $gte: filters.processorMinScore }
+        , "scores.ramScore": { $gte: filters.ramMinScore }, "scores.storageScore": { $gte: filters.storageMinScore }
+        , "scores.graphicsCardScore": { $gte: filters.graphicsCardMinScore }
+    }).sort({ "scores.processorScore": 1, "scores.ramScore": 1, "scores.storageScore": 1, "scores.graphicsCardScore": 1 });
     return computers;
 }
 /**

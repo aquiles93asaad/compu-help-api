@@ -132,13 +132,15 @@ definitions:
   GraphicsCardSpecifics:
     type: object
     properties:
+      brand:
+        type: string
+      graphicCardType:
+        type: string
       processorRate:
         type: string
       ram:
         type: number
       ramType:
-        type: string
-      brand:
         type: string
 
   ConnectivitySpecifics:

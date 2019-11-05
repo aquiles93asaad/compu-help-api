@@ -1,14 +1,28 @@
 paths:
-  /question/searchAll:
-    get:
+  /question/search:
+    post:
       tags:
         - Questions
-      summary: Retrieves all questions
+      summary: Retrieves all questions that satisfy the filters
       produces:
       - application/json
-      
+      parameters:
+      - in: body
+        name: Filters
+        description: Finds and returns all solutios that satisfy the filters sent in the body request (look for possible operators in https://docs.mongodb.com/manual/reference/operator/query/). To get all computers, don't send anything in the body
+        required: false
+        schema:
+          type: object
+          properties:
+            filters:
+              $ref: '#/definitions/mongoFilters'
       responses:
         200:
-          description: Returns all questions
+          description: Returns an array of questions that fit the filters sent
           schema:
-			$ref: '#/definitions/QuestionList'
+            type: object
+            properties:
+              questions:
+                type: array
+                items:
+                  $ref: '#/definitions/Question'

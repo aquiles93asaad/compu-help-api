@@ -91,11 +91,3 @@ definitions:
         type: number
       graphicsCardMaxScore:
         type: number
-
-  AnswerList:
-    type: object
-    properties:
-      answers:
-        type: array
-        items:
-          $ref: '#/definitions/Answer'

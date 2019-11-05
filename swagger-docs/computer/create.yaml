@@ -81,14 +81,6 @@ definitions:
         type: string
         readOnly: true
 
-  ComputerList:
-    type: object
-    properties:
-      computers:
-        type: array
-        items:
-          $ref: '#/definitions/Specifications'
-
   Specifications:
     type: object
     properties:
@@ -124,7 +116,6 @@ definitions:
         type: number
       cache:
         type: number
-
 
   MemorySpecifics:
     type: object

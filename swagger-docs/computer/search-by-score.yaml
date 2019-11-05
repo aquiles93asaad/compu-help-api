@@ -1,0 +1,27 @@
+paths:
+  /computer/search-by-score:
+    post:
+      tags:
+        - Computers
+      summary: Retrieves a list of computers based on the score of the answers
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: Answers data
+        description: The array of answers and their scores
+        required: true
+        schema:
+          type: array
+          items:
+            $ref: '#/definitions/Answer'
+      responses:
+        200:
+          description: Returns an array of computers sorted by best score according to the profiles, answers and filters sent
+          schema:
+            type: object
+            properties:
+              computers:
+                type: array
+                items:
+                  $ref: '#/definitions/Computer'

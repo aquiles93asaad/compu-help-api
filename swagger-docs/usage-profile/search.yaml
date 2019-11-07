@@ -1,9 +1,9 @@
 paths:
-  /computer/search:
+  /usage-profile/search:
     post:
       tags:
-        - Computers
-      summary: Retrieves all computers that satisfy the filters
+        - Usage Profiles
+      summary: Retrieves all usaage profiless that satisfy the filters
       produces:
       - application/json
       parameters:
@@ -18,15 +18,11 @@ paths:
               $ref: '#/definitions/mongoFilters'
       responses:
         200:
-          description: Returns an array computers that fit the filters sent
+          description: Returns an array of usaage profiless that fit the filters sent
           schema:
             type: object
             properties:
-              computers:
+              usageProfiles:
                 type: array
                 items:
-                  $ref: '#/definitions/Computer'
-
-definitions:        # Schema defination for request body
-  mongoFilters:
-    type: object
+                  $ref: '#/definitions/UsageProfile'

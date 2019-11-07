@@ -52,9 +52,9 @@ async function update(usageProfile) {
 }
 
 /**
- * searches for usageProfiles by the filters sent.
- * @param id string - ObjectId
- * @returns UsageProfile
+ * searches for usageProfiles filtered by the filters sent.
+ * @param filters object
+ * @returns Array of UsageProfile
 */
 async function search(filters) {
     try {

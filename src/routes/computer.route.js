@@ -8,9 +8,9 @@ const requireAuth = require('../middleware/require-auth');
 router.use(requireAuth);
 
 router.route('').post(asyncHandler(create));
-router.route('/search').get(asyncHandler(search));
 router.route('/:id').get(asyncHandler(get));
 router.route('').put(asyncHandler(update));
+router.route('/search').post(asyncHandler(search));
 router.route('/search-by-score').post(asyncHandler(searchByScore));
 //router.route('/:id').post(asyncHandler(remove));
 
@@ -33,6 +33,8 @@ async function get(req, res) {
 }
 
 async function search(req, res) {
+    let filters;
+    (typeof req.body.filters === 'undefined') ? filters = {} : filters = req.body.filters;
     const computers = await computerCtrl.search();
     res.json({ computers });
 }
@@ -42,12 +44,13 @@ async function update(req, res) {
     res.json({ computer });
 }
 
-async function remove(req, res) {
-    const computer = await computerCtrl.update(req.body.computer);
-    res.json({ computer });
-}
 
 async function searchByScore(req, res) {
     const computers = await computerCtrl.searchByScore(req.body.answers);
     res.json({computers});
 }
+
+// async function remove(req, res) {
+//     const computer = await computerCtrl.update(req.body.computer);
+//     res.json({ computer });
+// }

@@ -28,7 +28,11 @@ const ComputerSchema = new mongoose.Schema({
     }],
     specifications: {
         processor: {
-            brand: String,
+            brand: {
+                type: String,
+                required: true,
+                enum: ['INTEL', 'AMD']
+            },
             model: String,
             version: String,
             rate: Number,
@@ -37,15 +41,31 @@ const ComputerSchema = new mongoose.Schema({
         },
         memory: {
             ram: Number,
-            ramType: String,
+            ramType: {
+                type: String,
+                required: true,
+                enum: ['DDR2', 'DDR3', 'LPDDR2', 'LPDDR3', 'DDR4', 'DDR5']
+            },
             speed: Number,
             expandableRam: Number
         },
         graphicsCard: {
+            brand: {
+                type: String,
+                required: true,
+                enum: ['NVIDIA', 'INTEL', 'AMD']
+            },
+            graphicCardType: {
+                type: String,
+                required: true,
+                enum: ['INTEGRADA', 'DEDICADA']
+            },
             processorRate: Number,
             ram: Number,
-            ramType: String,
-            brand: String
+            ramType: {
+                type: String,
+                enum: ['DDR3','DDR3','DDR4','DDR5']
+            }
         },
         connectivity: {
             wifi: Boolean,
@@ -73,7 +93,11 @@ const ComputerSchema = new mongoose.Schema({
         },
         storage: {
             space: Number,
-            storageType: String,
+            storageType: {
+                type: String,
+                required: true,
+                enum: ['HDD', 'SSD']  
+            },
             speed: Number
         },
         operatingSystem: String

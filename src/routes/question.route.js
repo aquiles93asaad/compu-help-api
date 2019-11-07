@@ -8,10 +8,9 @@ const requireAuth = require('../middleware/require-auth');
 router.use(requireAuth);
 
 router.route('').post(asyncHandler(create));
-router.route('/searchAll').get(asyncHandler(searchAll));
-router.route('/:id').get(asyncHandler(search));
+router.route('/:id').get(asyncHandler(get));
 router.route('').put(asyncHandler(update));
-//router.route('/:id').post(asyncHandler(remove));
+router.route('/search').post(asyncHandler(search));
 
 module.exports = router;
 
@@ -41,13 +40,14 @@ async function update(req, res) {
     res.json({ question });
 }
 
-async function remove(req, res) {
-    const question = await questionCtrl.update(req.body.question);
-    res.json({ question });
-}
+// async function remove(req, res) {
+//     const question = await questionCtrl.update(req.body.question);
+//     res.json({ question });
+// }
 
-async function searchAll(req, res) {
-    console.log("Entro")
-    const questions = await questionCtrl.searchAll();
+async function search(req, res) {
+    let filters;
+    (typeof req.body.filters === 'undefined') ? filters = {} : filters = req.body.filters;
+    const questions = await questionCtrl.search(filters);
     res.json({ questions });
 }

@@ -145,13 +145,13 @@ async function getComputerByFilters(filters) {
 async function getComputerByFiltersQuery(filters) {
     const computers = await Computer.find({
         "scores.processorScore": { $gte: filters.processorMinScore },
-        "scores.processorScore": { $gte: filters.processorMaxScore },
+        "scores.processorScore": { $lte: filters.processorMaxScore },
         "scores.ramScore": { $gte: filters.ramMinScore },
-        "scores.ramScore": { $gte: filters.ramMaxScore },
+        "scores.ramScore": { $lte: filters.ramMaxScore },
         "scores.storageScore": { $gte: filters.storageMinScore },
-        "scores.storageScore": { $gte: filters.storageMaxScore },
+        "scores.storageScore": { $lte: filters.storageMaxScore },
         "scores.graphicsCardScore": { $gte: filters.graphicsCardMinScore },
-        "scores.graphicsCardScore": { $gte: filters.graphicsCardMaxScore }
+        "scores.graphicsCardScore": { $lte: filters.graphicsCardMaxScore }
     });
     return computers;
 }
@@ -196,22 +196,71 @@ function getProcessorScoring(processorSpecs, computerType) {
     try {
         let score = 0;
         let aux = 0;
+
+
+        //It calculates scoring based on brand.
+        switch (processorSpecs.brand.toUpperCase()) {
+            case "INTEL":
+                score += 20;
+                break;
+            case "AMD":
+                score += 15;
+                break;
+        }
+
+        //It calculates scoring based on processor's cores.
+        aux = processorSpecs.cores;
+        switch (true) {
+            case aux <= 2:
+                score += 5;
+                break;
+            case aux <= 4:
+                score += 10;
+                break;
+            case aux <= 6:
+                score += 15;
+                break;
+            case aux <= 8:
+                score += 20;
+                break;
+            case aux > 8:
+                score += 25;
+                break;
+        }
+
+        //It calculates scoring based on processor's cache memory (MB).
+        aux = processorSpecs.cache;
+        switch (true) {
+            case aux <= 1:
+                score += 2;
+                break;
+            case aux <= 2:
+                score += 3;
+                break;
+            case aux <= 3:
+                score += 4;
+                break;
+            case aux <= 4:
+                score += 5;
+                break;
+            case aux <= 8:
+                score += 7;
+                break;
+            case aux <= 12:
+                score += 10;
+                break;
+            case aux > 12:
+                score += 15;
+                break;
+        }
+
+
         switch (computerType) {
 
             //It calculates processor scoring for PC category.
             case "PC":
 
-                //It calculates scoring based on brand.
-                switch (processorSpecs.brand.toUpperCase()) {
-                    case "INTEL":
-                        score += 20;
-                        break;
-                    case "AMD":
-                        score += 15;
-                        break;
-                }
-
-                //It calculates scoring based on processor's rate (Ghz).
+                //It calculates scoring based on processor's rate (GHz).
                 aux = processorSpecs.rate;
                 switch (true) {
                     case aux <= 2.8:
@@ -229,43 +278,14 @@ function getProcessorScoring(processorSpecs, computerType) {
                     case aux <= 3.8:
                         score += 25;
                         break;
-                }
-
-                //It calculates scoring based on processor's cores.
-                aux = processorSpecs.cores;
-                switch (true) {
-                    case aux == 2:
-                        score += 5;
+                    case aux <= 4:
+                        score += 30;
                         break;
-                    case aux == 4:
-                        score += 10;
+                    case aux <= 4.2:
+                        score += 35;
                         break;
-                    case aux == 6:
-                        score += 15;
-                        break;
-                }
-
-                //It calculates scoring based on processor's cache memory (MB).
-                aux = processorSpecs.cache;
-                switch (true) {
-                    case aux == 1:
-                        score += 2;
-                        break;
-                    case aux == 2:
-                        score += 3;
-                        break;
-                    case aux == 3:
-                        score += 4;
-                        break;
-                    case aux == 4:
-                        score += 5;
-                        break;
-                    case aux <= 8:
-                        score += 7;
-                        break;
-                    case aux <= 12:
-                        score += 10;
-                        break;
+                    case aux > 4.2:
+                        score += 40;
                 }
 
                 break;
@@ -273,9 +293,61 @@ function getProcessorScoring(processorSpecs, computerType) {
             //It calculates processor scoring for 'NOTEBOOK' category.
             case "NOTEBOOK":
 
+                //It calculates scoring based on processor's rate (Ghz).
+                aux = processorSpecs.rate;
+                switch (true) {
+                    case aux <= 1.1:
+                        score += 5;
+                        break;
+                    case aux <= 1.2:
+                        score += 7;
+                        break;
+                    case aux <= 1.3:
+                        score += 10;
+                        break;
+                    case aux <= 1.4:
+                        score += 14;
+                        break;
+                    case aux <= 1.5:
+                        score += 15;
+                        break;
+                    case aux <= 1.6:
+                        score += 16;
+                        break;
+                    case aux <= 1.8:
+                        score += 18;
+                        break;
+                    case aux <= 2.1:
+                        score += 21;
+                        break;
+                    case aux <= 2.2:
+                        score += 22;
+                        break;
+                    case aux <= 2.3:
+                        score += 23;
+                        break;
+                    case aux <= 2.6:
+                        score += 25;
+                        break;
+                    case aux <= 3.4:
+                        score += 30;
+                        break;
+                    case aux <= 3.6:
+                        score += 33;
+                        break;
+                    case aux <= 4.5:
+                        score += 35;
+                        break;
+                    case aux <= 4.6:
+                        score += 37;
+                        break;
+                    case aux > 4.6:
+                        score += 40;
+                        break;
+                }
+
                 break;
         }
-
         return score;
     } catch (error) {
         console.log(error);
@@ -295,53 +367,65 @@ function getRamScoring(ramSpecs, computerType) {
     try {
         let score = 0;
         let aux = 0;
+
+
+        //It calculates scoring based on ram's memory (GB).
+        score += ramSpecs.ram / 2;
+
+        //It calculates scoring based on ram's types.
+        switch (ramSpecs.ramType.toUpperCase()) {
+            case 'DDR2':
+                score += 5;
+                break;
+            case 'LPDDR2':
+                score += 7;
+                break;
+            case 'LPDDR3':
+                score += 12;
+                break;
+            case 'DDR3':
+                score += 15;
+                break;
+            case 'DDR4':
+                score += 25;
+                break;
+            case 'DDR5':
+                score += 35;
+                break;
+        }
+
+
         switch (computerType) {
 
             //It calculates ram scoring for 'PC' category.
             case "PC":
 
-                //It calculates scoring based on ram's memory (GB).
-                score += ramSpecs.ram / 2;
-
-                //It calculates scoring based on ram's types.
-                switch (ramSpecs.ramType.toUpperCase()) {
-                    case 'DDR2':
-                        score += 5;
-                        break;
-                    case 'DDR3':
-                        score += 15;
-                        break;
-                    case 'DDR4':
-                        score += 30;
-                        break;
-                    case 'DDR5':
-                        score += 40;
-                        break;
-                }
-
                 //It calculates scoring based on ram's speed (MHz).
                 aux = ramSpecs.speed;
                 switch (true) {
-                    case aux <= 1600:
+                    case aux <= 800:
                         score += 2;
                         break;
-                    case aux <= 2133:
+                    case aux <= 1600:
                         score += 5;
                         break;
-                    case aux <= 2400:
+                    case aux <= 2133:
                         score += 10;
                         break;
-                    case aux <= 3000:
+                    case aux <= 2400:
                         score += 17;
                         break;
-                    case aux <= 3200:
+                    case aux <= 3000:
                         score += 20;
                         break;
-                    case aux <= 4000:
+                    case aux <= 3200:
                         score += 35;
                         break;
-                    case aux > 4000:
+                    case aux <= 4000:
                         score += 40;
+                        break;
+                    case aux > 4000:
+                        score += 50;
                         break;
                 }
 
@@ -349,6 +433,50 @@ function getRamScoring(ramSpecs, computerType) {
 
             //It calculates scoring for 'NOTEBOOK' category.
             case "NOTEBOOK":
+
+                //It calculates scoring based on ram's speed (MHz).
+                aux = ramSpecs.speed;
+                switch (true) {
+                    case aux <= 533:
+                        score += 2;
+                        break;
+                    case aux <= 600:
+                        score += 5;
+                        break;
+                    case aux <= 733:
+                        score += 7;
+                        break;
+                    case aux <= 800:
+                        score += 10;
+                        break;
+                    case aux <= 933:
+                        score += 13;
+                        break;
+                    case aux <= 1000:
+                        score += 15;
+                        break;
+                    case aux <= 1600:
+                        score += 20;
+                        break;
+                    case aux <= 2133:
+                        score += 25;
+                        break;
+                    case aux <= 2400:
+                        score += 30;
+                        break;
+                    case aux <= 3000:
+                        score += 35;
+                        break;
+                    case aux <= 3200:
+                        score += 40;
+                        break;
+                    case aux <= 4000:
+                        score += 45;
+                        break;
+                    case aux > 4000:
+                        score += 50;
+                        break;
+                }
 
                 break;
         }
@@ -376,10 +504,198 @@ function getStorageScoring(storageSpecs, computerType) {
 
             //It calculates scoring for 'PC' category.
             case "PC":
+
+                //It calculates scoring based on storage type, its speed and space.
+                aux = storageSpecs.speed;
+                switch (storageSpecs.storageType.toUpperCase()) {
+
+                    case 'HDD':
+                        score += 5;
+
+                        //It calculates scoring based on storage speed.
+                        switch (true) {
+                            case aux <= 5400:
+                                score += 10;
+                                break;
+                            case aux <= 7200:
+                                score += 15;
+                                break;
+                            case aux > 7200:
+                                score += 20;
+                                break;
+                        }
+
+
+                        //It calculates scoring based on storage space.
+                        aux = storageSpecs.space;
+                        switch (true) {
+                            case aux <= 500:
+                                score += 5;
+                                break;
+                            case aux <= 1000:
+                                score += 10;
+                                break;
+                            case aux <= 2000:
+                                score += 15;
+                                break;
+                            case aux > 2000:
+                                score += 20;
+                                break;
+                        }
+
+                        break;
+
+                    case 'SSD':
+                        score += 20;
+
+                        //It calculates scoring based on storage speed.
+                        switch (true) {
+                            case aux <= 1400:
+                                score += 5;
+                                break;
+                            case aux <= 1500:
+                                score += 10;
+                                break;
+                            case aux <= 2800:
+                                score += 20;
+                                break;
+                            case aux <= 3000:
+                                score += 30;
+                                break;
+                            case aux > 3000:
+                                score += 40;
+                                break;
+                        }
+
+
+
+                        //It calculates scoring based on storage space.
+                        aux = storageSpecs.space;
+                        switch (true) {
+                            case aux <= 32:
+                                score += 5;
+                                break;
+                            case aux <= 64:
+                                score += 10;
+                                break;
+                            case aux <= 128:
+                                score += 20;
+                                break;
+                            case aux <= 256:
+                                score += 30;
+                                break;
+                            case aux <= 512:
+                                score += 40;
+                                break;
+                            case aux <= 1000:
+                                score += 50;
+                                break;
+                            case aux > 1000:
+                                score += 60;
+                                break;
+                        }
+
+                        break;
+                }
+
                 break;
 
             //It calculates scoring for 'NOTEBOOK' category.
             case "NOTEBOOK":
+
+
+                //It calculates scoring based on storage type, its speed and space.
+                aux = storageSpecs.speed;
+                switch (storageSpecs.storageType.toUpperCase()) {
+
+                    case 'HDD':
+                        score += 5;
+
+                        //It calculates scoring based on storage speed.
+                        switch (true) {
+                            case aux <= 5400:
+                                score += 10;
+                                break;
+                            case aux <= 7200:
+                                score += 15;
+                                break;
+                            case aux > 7200:
+                                score += 20;
+                                break;
+                        }
+
+
+                        //It calculates scoring based on storage space.
+                        aux = storageSpecs.space;
+                        switch (true) {
+                            case aux <= 500:
+                                score += 5;
+                                break;
+                            case aux <= 1000:
+                                score += 10;
+                                break;
+                            case aux <= 2000:
+                                score += 15;
+                                break;
+                            case aux > 2000:
+                                score += 20;
+                                break;
+                        }
+
+                        break;
+
+                    case 'SSD':
+                        score += 20;
+
+                        //It calculates scoring based on storage speed.
+                        switch (true) {
+                            case aux <= 1400:
+                                score += 5;
+                                break;
+                            case aux <= 1500:
+                                score += 10;
+                                break;
+                            case aux <= 2800:
+                                score += 20;
+                                break;
+                            case aux <= 3000:
+                                score += 30;
+                                break;
+                            case aux > 3000:
+                                score += 40;
+                                break;
+                        }
+
+
+                        //It calculates scoring based on storage space.
+                        aux = storageSpecs.space;
+                        switch (true) {
+                            case aux <= 32:
+                                score += 5;
+                                break;
+                            case aux <= 64:
+                                score += 10;
+                                break;
+                            case aux <= 128:
+                                score += 20;
+                                break;
+                            case aux <= 256:
+                                score += 30;
+                                break;
+                            case aux <= 512:
+                                score += 40;
+                                break;
+                            case aux <= 1000:
+                                score += 50;
+                                break;
+                            case aux > 1000:
+                                score += 60;
+                                break;
+                        }
+
+                        break;
+                }
+
                 break;
         }
 
@@ -402,14 +718,114 @@ function getGraphicsCardScoring(graphicSpecs, computerType) {
     try {
         let score = 0;
         let aux = 0;
+
+        //It calculates scoring based on graphics card brand.
+        switch (graphicSpecs.brand) {
+            case 'AMD':
+                score += 5;
+                break;
+            case 'INTEL':
+                score += 10;
+                break;
+            case 'NVIDIA':
+                score += 10;
+                break;
+        }
+
+        //It calculates scoring based on graphics card ram type.
+        switch (graphicSpecs.ramType) {
+            case 'DDR2':
+                score += 5;
+                break;
+            case 'DDR3':
+                score += 10;
+                break;
+            case 'DDR4':
+                score += 15;
+                break;
+            case 'DDR5':
+                score += 20;
+                break;
+            default:
+                break;
+        }
+
+
         switch (computerType) {
 
             //It calculates scoring for 'PC' category.
             case "PC":
+
+
+                //It calculates scoring based on graphics card type and its ram.
+                switch (graphicSpecs.graphicCardType) {
+                    case 'INTEGRADA':
+                        score += 10;
+
+                    case 'DEDICADA':
+                        score += 30;
+
+                        //It calculates scoring based on graphics ram.
+                        aux = graphicSpecs.ram;
+                        switch (true) {
+                            case aux <= 1:
+                                score += 5;
+                                break;
+                            case aux <= 3:
+                                score += 10;
+                                break;
+                            case aux <= 6:
+                                score += 20;
+                                break;
+                            case aux <= 8:
+                                score += 30;
+                                break;
+                            case aux > 8:
+                                score += 40;
+                                break;
+                        }
+
+                        break;
+                }
+
                 break;
+
 
             //It calculates scoring for 'NOTEBOOK' category.
             case "NOTEBOOK":
+
+
+                //It calculates scoring based on graphics card type and its ram.
+                switch (graphicSpecs.graphicCardType) {
+                    case 'INTEGRADA':
+                        score += 10;
+
+                    case 'DEDICADA':
+                        score += 30;
+
+                        //It calculates scoring based on graphics ram.
+                        aux = graphicSpecs.ram;
+                        switch (true) {
+                            case aux <= 1:
+                                score += 5;
+                                break;
+                            case aux <= 3:
+                                score += 10;
+                                break;
+                            case aux <= 6:
+                                score += 20;
+                                break;
+                            case aux <= 8:
+                                score += 30;
+                                break;
+                            case aux > 8:
+                                score += 40;
+                                break;
+                        }
+
+                        break;
+                }
+
                 break;
         }
 

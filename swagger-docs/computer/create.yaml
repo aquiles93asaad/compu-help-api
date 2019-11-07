@@ -81,14 +81,6 @@ definitions:
         type: string
         readOnly: true
 
-  ComputerList:
-    type: object
-    properties:
-      computers:
-        type: array
-        items:
-          $ref: '#/definitions/Specifications'
-
   Specifications:
     type: object
     properties:
@@ -125,7 +117,6 @@ definitions:
       cache:
         type: number
 
-
   MemorySpecifics:
     type: object
     properties:
@@ -141,13 +132,15 @@ definitions:
   GraphicsCardSpecifics:
     type: object
     properties:
+      brand:
+        type: string
+      graphicCardType:
+        type: string
       processorRate:
         type: string
       ram:
         type: number
       ramType:
-        type: string
-      brand:
         type: string
 
   ConnectivitySpecifics:

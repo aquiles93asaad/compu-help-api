@@ -52,12 +52,13 @@ async function update(question) {
 }
 
 /**
- * Get all questions
+ * searches for questions filtered by the filters sent.
+ * @param filters object
  * @returns Array of Question
 */
-async function searchAll() {
+async function search(filters) {
     try {
-        const questions = await Question.find({}); 
+        const questions = await Question.find(filters); 
         return questions;
     } catch (error) {
         console.log(error);
@@ -69,5 +70,5 @@ module.exports = {
     create,
     get,
     update,
-    searchAll,
+    search,
 };

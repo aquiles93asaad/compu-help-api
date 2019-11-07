@@ -22,7 +22,7 @@ const ComputerSchema = new mongoose.Schema({
         required: true,
         enum: ['PC', 'NOTEBOOK']
     },
-    prices: Number,
+    price: Number,
     availableAt: {
         type: [String],
     },
@@ -107,6 +107,9 @@ const ComputerSchema = new mongoose.Schema({
         ramScore: Number,
         storageScore: Number,
         graphicsCardScore: Number
+    },
+    images: {
+        type: [String]
     },
     createdBy: {
         type: Schema.Types.ObjectId,

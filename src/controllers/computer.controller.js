@@ -165,7 +165,8 @@ async function getComputerByFiltersQueryMin(filters) {
         "scores.processorScore": { $gte: filters.processorMinScore },
         "scores.ramScore": { $gte: filters.ramMinScore },
         "scores.storageScore": { $gte: filters.storageMinScore },
-        "scores.graphicsCardScore": { $gte: filters.graphicsCardMinScore }},
+        "scores.graphicsCardScore": { $gte: filters.graphicsCardMinScore }
+    },
         '-specifications -scores')
         .sort({ "scores.processorScore": 1, "scores.ramScore": 1, "scores.storageScore": 1, "scores.graphicsCardScore": 1 });
     return orderByComputerByPromedio(computers);
@@ -174,38 +175,38 @@ async function getComputerByFiltersQueryMin(filters) {
  * Calcula y ordena las computadores por scores.
  * @param {array} computers 
  */
-function orderByComputerByPromedio(computers){
+function orderByComputerByPromedio(computers) {
     promedios = [];
     for (let index = 0; index < computers.length; index++) {
-     const element = computers[index];
-         var computerAvg = {"avg": 0,"computer": Computer}   
-         computerAvg.avg =getAvg(element.scores) ;
-         computerAvg.computer = element;
-         promedios[index] = computerAvg;
-     }
-     computers = [];
-     i = 0;
-     orderByDesc(promedios).forEach(element => {     
-         console.log("Promedios: " + element.avg + " computer: " +element.computer.name);
-         computers[i] = element.computer;
-         i++;
-     });
-     return computers;
+        const element = computers[index];
+        var computerAvg = { "avg": 0, "computer": Computer }
+        computerAvg.avg = getAvg(element.scores);
+        computerAvg.computer = element;
+        promedios[index] = computerAvg;
+    }
+    computers = [];
+    i = 0;
+    orderByDesc(promedios).forEach(element => {
+        console.log("Promedios: " + element.avg + " computer: " + element.computer.name);
+        computers[i] = element.computer;
+        i++;
+    });
+    return computers;
 }
 
 /**
  * Ordena el array de promedios por score de computadoras.
  * @param {computerAvg} promedios 
  */
-function orderByDesc(promedios){
-    return promedios.sort(function(a, b){return b.avg-a.avg});
+function orderByDesc(promedios) {
+    return promedios.sort(function (a, b) { return b.avg - a.avg });
 }
 /**
  * Calcula el promedio de los score de  computadoras.
  * @param {Computer.scores} scores 
  */
-function getAvg(scores){
-    return ((scores.processorScore+scores.ramScore+scores.storageScore+scores.graphicsCardScore)/4)
+function getAvg(scores) {
+    return ((scores.processorScore + scores.ramScore + scores.storageScore + scores.graphicsCardScore) / 4)
 }
 /**
  * Generate computer's score based on the full specification.
@@ -789,6 +790,9 @@ function getGraphicsCardScoring(graphicSpecs, computerType) {
             case 'DDR5':
                 score += 20;
                 break;
+            case 'GDDR6':
+                score += 25;
+                break;
             default:
                 break;
         }
@@ -806,7 +810,7 @@ function getGraphicsCardScoring(graphicSpecs, computerType) {
                         score += 10;
 
                     case 'DEDICADA':
-                        score += 30;
+                        score += 25;
 
                         //It calculates scoring based on graphics ram.
                         aux = graphicSpecs.ram;

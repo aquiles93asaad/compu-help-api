@@ -64,7 +64,7 @@ const ComputerSchema = new mongoose.Schema({
             ram: Number,
             ramType: {
                 type: String,
-                enum: ['DDR3','DDR3','DDR4','DDR5']
+                enum: ['DDR3','DDR3','DDR4','DDR5', 'GDDR6']
             }
         },
         connectivity: {

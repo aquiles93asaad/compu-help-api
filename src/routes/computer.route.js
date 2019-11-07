@@ -44,6 +44,7 @@ async function update(req, res) {
 
 
 async function searchByScore(req, res) {
+    console.log(req.body);
     const computers = await computerCtrl.searchByScore(req.body.answers);
     res.json({computers});
 }

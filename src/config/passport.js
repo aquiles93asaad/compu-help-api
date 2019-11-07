@@ -10,7 +10,7 @@ const config = require('./config');
 const localLogin = new LocalStrategy({
     usernameField: 'email'
 }, async (email, password, done) => {
-    let user = await User.findOne({ email });
+    let user = await User.findOne({ email }, 'name lastName email hashedPassword image esAdmin');
     if (!user) {
         return done(null, null, { errorMessage: "User o email inexistente", errorType: 'invalid-user' });
     }
@@ -28,14 +28,13 @@ const jwtLogin = new JwtStrategy({
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: config.jwtSecret
 }, async (payload, done) => {
-    let user = await User.findById(payload._id);
+    let user = await User.findById(payload._id, 'name lastName email image esAdmin');
 
     if (!user) {
         return done(null, false, { errorMessage: "Token inválido", errorType: 'invalid-token' });
     }
 
     user = user.toObject();
-    delete user.hashedPassword;
     done(null, user);
 });
 

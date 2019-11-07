@@ -22,10 +22,10 @@ const ComputerSchema = new mongoose.Schema({
         required: true,
         enum: ['PC', 'NOTEBOOK']
     },
-    prices: [{
-        price: Number,
-        availableAt: String
-    }],
+    prices: Number,
+    availableAt: {
+        type: [String],
+    },
     specifications: {
         processor: {
             brand: {

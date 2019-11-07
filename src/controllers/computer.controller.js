@@ -71,7 +71,7 @@ async function update(computer) {
 */
 async function search() {
     try {
-        const computers = await Computer.find({});
+        const computers = await Computer.find({}, '-specifications -scores');
         return computers;
     } catch (error) {
         console.log(error);
@@ -163,7 +163,8 @@ async function getComputerByFiltersQueryMin(filters) {
         "scores.processorScore": { $gte: filters.processorMinScore },
         "scores.ramScore": { $gte: filters.ramMinScore },
         "scores.storageScore": { $gte: filters.storageMinScore },
-        "scores.graphicsCardScore": { $gte: filters.graphicsCardMinScore }})
+        "scores.graphicsCardScore": { $gte: filters.graphicsCardMinScore }},
+        '-specifications -scores')
         .sort({ "scores.processorScore": 1, "scores.ramScore": 1, "scores.storageScore": 1, "scores.graphicsCardScore": 1 });
     return orderByComputerByPromedio(computers);
 }

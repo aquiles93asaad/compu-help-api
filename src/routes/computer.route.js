@@ -22,14 +22,12 @@ async function create(req, res) {
 }
 
 async function get(req, res) {
-    console.log(req.params);
     if(!req.params.id) {
         res.status(400);
         res.json({ error: "id param is mandatory"})
     }
-    console.log("Valor: " + req.params.id);
-    const computers = await computerCtrl.get(req.params.id);
-    res.json({ computers });
+    const computer = await computerCtrl.get(req.params.id);
+    res.json({ computer });
 }
 
 async function search(req, res) {

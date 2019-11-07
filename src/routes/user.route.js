@@ -10,7 +10,7 @@ router.use(requireAuth);
 router.route('/check').post(asyncHandler(check));
 router.route('/create').post(asyncHandler(create));
 router.route('/get').post(asyncHandler(get));
-router.route('/update').post(asyncHandler(update));
+router.route('/update').put(asyncHandler(update));
 
 module.exports = router;
 

@@ -24,7 +24,7 @@ async function get(req, res) {
         res.status(400);
         res.json({ error: "id param is mandatory"})
     }
-    const questions = await questionCtrl.get(req.user, filters);
+    const questions = await questionCtrl.get(req.params.id);
     res.json({ questions });
 }
 

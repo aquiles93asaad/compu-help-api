@@ -40,6 +40,10 @@ definitions:        # Schema defination for request body
         uniqueItems: true
       esAdmin:
         type: boolean
+      image:
+        type: string
+      favouriteComputers:
+        type: string
       createdAt:
         type: date
         readOnly: true

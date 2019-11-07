@@ -25,6 +25,13 @@ const UserSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    image: {
+        type: String,
+    },
+    favouriteComputers: {
+        type: [Schema.Types.ObjectId],
+        ref: 'Computer'
+    },
     createdBy: {
         type: Schema.Types.ObjectId,
         ref: 'User'

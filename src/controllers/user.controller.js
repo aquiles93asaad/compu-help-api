@@ -66,12 +66,17 @@ async function update(userData) {
             userData.hashedPassword = bcrypt.hashSync(userData.password, 10);
             delete userData.password
         }
-        
-        const user = await User.findOneAndUpdate(
+
+        let user = await User.findOneAndUpdate(
             { _id: userData._id },
             userData,
-            { new: true }
+            { new: true },
         );
+
+        if (user) {
+            user.toObject();
+            delete user.hashedPassword;
+        }
         return user;
     } catch (error) {
         console.log(error);

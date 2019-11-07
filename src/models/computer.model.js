@@ -108,6 +108,9 @@ const ComputerSchema = new mongoose.Schema({
         storageScore: Number,
         graphicsCardScore: Number
     },
+    images: {
+        type: [String]
+    },
     createdBy: {
         type: Schema.Types.ObjectId,
         ref: 'User'

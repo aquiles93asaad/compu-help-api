@@ -33,7 +33,7 @@ async function get(req, res) {
 async function search(req, res) {
     let filters;
     (typeof req.body.filters === 'undefined') ? filters = {} : filters = req.body.filters;
-    const computers = await computerCtrl.search();
+    const computers = await computerCtrl.search(filters);
     res.json({ computers });
 }
 

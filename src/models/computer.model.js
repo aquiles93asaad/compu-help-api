@@ -22,10 +22,11 @@ const ComputerSchema = new mongoose.Schema({
         required: true,
         enum: ['PC', 'NOTEBOOK']
     },
-    price: Number,
-    availableAt: {
-        type: [String],
-    },
+    availableAt: [{
+        store: String,
+        url: String,
+        price: Number
+    }],
     specifications: {
         processor: {
             brand: {
@@ -89,7 +90,8 @@ const ComputerSchema = new mongoose.Schema({
             width: Number,
             height: Number,
             depth: Number,
-            weight: Number
+            weight: Number,
+            inches: Number
         },
         storage: {
             space: Number,

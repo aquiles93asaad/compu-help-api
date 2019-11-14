@@ -210,7 +210,7 @@ function getScoring(computer) {
         scores.ramScore = getRamScoring(computer.specifications.memory, computer.computerType.toUpperCase());
         scores.storageScore = getStorageScoring(computer.specifications.storage, computer.computerType.toUpperCase());
         scores.graphicsCardScore = getGraphicsCardScoring(computer.specifications.graphicsCard, computer.computerType.toUpperCase());
-        console.log(scores);
+        // console.log(scores);
         return scores;
     } catch (error) {
         console.log(error);

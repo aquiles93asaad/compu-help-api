@@ -11,7 +11,7 @@ router.route('/check').post(asyncHandler(check));
 router.route('/create').post(asyncHandler(create));
 router.route('/get').post(asyncHandler(get));
 router.route('/update').put(asyncHandler(update));
-router.route('/addComputerToFavorite/:idUser/:idComputer').get(asyncHandler(addComputerToFavorite));
+router.route('/setFavourites').post(asyncHandler(setFavourites));
 
 module.exports = router;
 
@@ -41,12 +41,7 @@ async function update(req, res) {
  * @param {*} req 
  * @param {*} res 
  */
-async function addComputerToFavorite(req, res) {
-    console.log("llego: " + req.params.idUser + " " + req.params.idComputer );
-    if(!req.params.idUser && !req.params.idComputer) {
-        res.status(400);
-        res.json({ error: "id param is mandatory"})
-    }
-    const user = await userCtrl.addComputerToFavorite(req.params.idUser,req.params.idComputer);
+async function setFavourites(req, res) {
+    const user = await userCtrl.setFavourites(req.user._id, req.body.computersIds);
     res.json({ user });
 }

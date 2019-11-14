@@ -84,12 +84,12 @@ async function update(userData) {
     }
 }
 
-async function addComputerToFavorite(idUser,idComputer) {
+async function setFavourites(idUser, computersIds) {
     try {
-        console.log("llego: " + idComputer + " " + idUser);
+        const data = { favouriteComputers: computersIds };
         let user = await User.findOneAndUpdate(
             { _id: idUser },
-            {favoriteComputers:{$push:[idComputer]}},
+            data,
             { new: true },
         );
         return user;
@@ -104,5 +104,5 @@ module.exports = {
     create,
     get,
     update,
-    addComputerToFavorite,
+    setFavourites,
 };

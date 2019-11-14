@@ -23,6 +23,7 @@ const requireAuthenticationList = [
     'GET /api/user',
     'PUT /api/user',
     'DELETE /api/user',
+    'POST /api/user/setFavourites',
 ];
 
 const requireAuthentication = function(request, response, next) {

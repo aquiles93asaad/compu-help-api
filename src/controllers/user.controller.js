@@ -84,9 +84,25 @@ async function update(userData) {
     }
 }
 
+async function addComputerToFavorite(idUser,idComputer) {
+    try {
+        console.log("llego: " + idComputer + " " + idUser);
+        let user = await User.findOneAndUpdate(
+            { _id: idUser },
+            {favoriteComputers:{$push:[idComputer]}},
+            { new: true },
+        );
+        return user;
+    } catch(error) {
+        console.log(error);
+        return error;
+    }
+}
+
 module.exports = {
     check,
     create,
     get,
     update,
+    addComputerToFavorite,
 };

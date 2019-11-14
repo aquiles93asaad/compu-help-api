@@ -61,7 +61,8 @@ async function update(computer) {
 */
 async function search(filters) {
     try {
-        const computers = await Computer.find(filters, '-specifications -scores');
+        console.log(filters);
+        const computers = await Computer.find(filters);
         return computers;
     } catch (error) {
         console.log(error);

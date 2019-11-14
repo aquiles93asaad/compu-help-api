@@ -35,16 +35,6 @@ async function get(id) {
     }
 }
 
-async function searchFindQuestions(range) {
-    try {
-        const createdComputer = await Computer(computer).save();
-        return createdComputer;
-    } catch (error) {
-        console.log(error);
-        return error;
-    }
-}
-
 /**
  * Updates a computer data and returns the updated computer
  * @param computer Computer
@@ -66,12 +56,12 @@ async function update(computer) {
 
 
 /**
- * Get all computers
+ * Get computers by filers
  * @returns Array of Computer
 */
-async function search() {
+async function search(filters) {
     try {
-        const computers = await Computer.find({}, '-specifications -scores');
+        const computers = await Computer.find(filters, '-specifications -scores');
         return computers;
     } catch (error) {
         console.log(error);

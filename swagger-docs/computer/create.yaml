@@ -47,7 +47,7 @@ definitions:
       availableAt:
         type: array
         items:
-          type: string
+          $ref: '#/definitions/ComputerAvailability'
 
   Computer:
     type: object
@@ -55,19 +55,20 @@ definitions:
       _id:
         type: string
         uniqueItems: true
-        readOnly: true
       name:
         type: string
       brand:
-        type: String,
+        type: string,
       availableAt:
         type: array
         items:
-          type: string
+          $ref: '#/definitions/ComputerAvailability'
       releaseDate:
         type: date
       computerType:
           type: string
+      specifications:
+        $ref: '#/definitions/Specifications'
       createdAt:
         type: date
         readOnly: true
@@ -190,6 +191,8 @@ definitions:
         type: number
       weight:
         type: number
+      inches:
+        type: number
 
   StorageSpecifics:
     type: object
@@ -199,4 +202,14 @@ definitions:
       storageType:
         type: string
       speed:
+        type: number
+
+  ComputerAvailability:
+    type: object
+    properties:
+      store:
+        type: string
+      url:
+        type: string
+      price:
         type: number

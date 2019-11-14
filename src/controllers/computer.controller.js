@@ -98,9 +98,7 @@ async function searchByScore(answers) {
         };
         for (var i = 0; i < answers.length; i++) {
             filters = await updateFilters(filters, answers[i]);
-        }
-        //return getComputerByFilters(filters); prueba de concepto al filtro 
-        //return getComputerByFiltersQuery(filters); version 1
+        }   
         return getComputerByFiltersQueryMin(filters);//version por filtro.
     } catch (error) {
         console.log(error);
@@ -120,27 +118,6 @@ function updateFilters(filters, answer) {
     return filters;
 }
 
-async function getComputerByFilters(filters) {
-    const computers = {};
-    const computersAux = await Computer.find({});
-    var i = 0;
-    computersAux.forEach(element => {
-        if (JSON.stringify(element.scores) != '{}') {
-            if (element.scores.processorScore >= filters.processorMinScore
-                && element.scores.processorScore >= filters.processorMaxScore
-                && element.scores.ramScore >= filters.ramMinScore
-                && element.scores.ramScore >= filters.ramMaxScore
-                && element.scores.storageScore >= filters.storageMinScore
-                && element.scores.storageScore >= filters.storageMaxScore
-                && element.scores.graphicsCardScore >= filters.graphicsCardMinScore
-                && element.scores.graphicsCardScore >= filters.graphicsCardMaxScore) {
-                computers[i] = element;
-                i++;
-            }
-        }
-    });
-    return computers;
-}
 
 async function getComputerByFiltersQuery(filters) {
     const computers = await Computer.find({
@@ -165,11 +142,9 @@ async function getComputerByFiltersQueryMin(filters) {
         "scores.processorScore": { $gte: filters.processorMinScore },
         "scores.ramScore": { $gte: filters.ramMinScore },
         "scores.storageScore": { $gte: filters.storageMinScore },
-        "scores.graphicsCardScore": { $gte: filters.graphicsCardMinScore }
-    },
-        '-specifications -scores')
+        "scores.graphicsCardScore": { $gte: filters.graphicsCardMinScore }})
         .sort({ "scores.processorScore": 1, "scores.ramScore": 1, "scores.storageScore": 1, "scores.graphicsCardScore": 1 });
-    return orderByComputerByPromedio(computers);
+        return orderByComputerByPromedio(computers);
 }
 /**
  * Calcula y ordena las computadores por scores.

@@ -774,6 +774,7 @@ function getGraphicsCardScoring(graphicSpecs, computerType) {
                 switch (graphicSpecs.graphicCardType) {
                     case 'INTEGRADA':
                         score += 10;
+                        break;
 
                     case 'DEDICADA':
                         score += 25;
@@ -812,6 +813,7 @@ function getGraphicsCardScoring(graphicSpecs, computerType) {
                 switch (graphicSpecs.graphicCardType) {
                     case 'INTEGRADA':
                         score += 10;
+                        break;
 
                     case 'DEDICADA':
                         score += 30;

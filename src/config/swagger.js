@@ -30,7 +30,7 @@ const swaggerDefinition = {
         },
     ],
     schemes: [
-        "http"
+        "https"
     ],
     consumes: [
         "application/json"

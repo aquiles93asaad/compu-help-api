@@ -13,8 +13,8 @@ const QuestionSchema = new mongoose.Schema({
     answers: [{
         label: String,
         value: String | Boolean,
-        procesorMinScore: Number,
-        procesorMaxScore: Number,
+        processorMinScore: Number,
+        processorMaxScore: Number,
         ramMinScore: Number,
         ramMaxScore: Number,
         storageMinScore: Number,

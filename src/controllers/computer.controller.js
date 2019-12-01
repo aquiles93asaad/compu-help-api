@@ -90,7 +90,8 @@ async function searchByScore(answers) {
         for (var i = 0; i < answers.length; i++) {
             filters = await updateFilters(filters, answers[i]);
         }   
-        return getComputerByFiltersQueryMin(filters);//version por filtro.
+        //return getComputerByFiltersQueryMin(filters);//version por filtro.
+        return getComputerByFiltersQueryMinOr(filters);//version por filtro.
     } catch (error) {
         console.log(error);
         return error;
@@ -128,6 +129,16 @@ async function getComputerByFiltersQuery(filters) {
  * @param computer
  * @returns scores
 */
+async function getComputerByFiltersQueryMinOr(filters) {
+    const computers = await Computer.find({"$or":[
+        "scores.processorScore": { $gte: filters.processorMinScore },
+        "scores.ramScore": { $gte: filters.ramMinScore },
+        "scores.storageScore": { $gte: filters.storageMinScore },
+        "scores.graphicsCardScore": { $gte: filters.graphicsCardMinScore }]})
+        .sort({ "scores.processorScore": 1, "scores.ramScore": 1, "scores.storageScore": 1, "scores.graphicsCardScore": 1 });
+        return orderByComputerByPromedio(computers);
+}
+
 async function getComputerByFiltersQueryMin(filters) {
     const computers = await Computer.find({
         "scores.processorScore": { $gte: filters.processorMinScore },
@@ -137,6 +148,7 @@ async function getComputerByFiltersQueryMin(filters) {
         .sort({ "scores.processorScore": 1, "scores.ramScore": 1, "scores.storageScore": 1, "scores.graphicsCardScore": 1 });
         return orderByComputerByPromedio(computers);
 }
+
 /**
  * Calcula y ordena las computadores por scores.
  * @param {array} computers 

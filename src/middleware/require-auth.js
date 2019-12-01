@@ -5,6 +5,7 @@ const requireAuthenticationList = [
     'POST /api/computer',
     'PUT /api/computer',
     'DELETE /api/computer',
+    'POST /api/addComment',
     
     'POST /api/notificacion',
     'GET /api/notificacion',

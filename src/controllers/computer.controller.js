@@ -54,7 +54,6 @@ async function update(computer) {
     }
 }
 
-
 /**
  * Get computers by filers
  * @returns Array of Computer
@@ -64,6 +63,42 @@ async function search(filters) {
         console.log(filters);
         const computers = await Computer.find(filters);
         return computers;
+    } catch (error) {
+        console.log(error);
+        return error;
+    }
+}
+
+/**
+ * Add a comment to a computer
+ * @returns computer with the comment
+*/
+async function addComment(comment, computerId) {
+    try {
+        let computer = await Computer.findOne({
+            '_id': computerId
+        });
+
+        let averageRating = 0;
+        for (let i = 0; i < computer.comments.length; i++) {
+            averageRating += computer.comments[i].rating;
+        }
+        averageRating += comment.rating;
+        console.log(averageRating);
+        averageRating = averageRating/(computer.comments.length + 1);
+        console.log(averageRating);
+        averageRating = averageRating.toFixed(2);
+        console.log(averageRating);
+        averageRating = Number(averageRating);
+        console.log(averageRating);
+        computer = await Computer.findOneAndUpdate(
+            { _id: computerId},
+            {
+                $push: { comments: comment},
+                rating: averageRating
+            }
+        );
+        return computer;
     } catch (error) {
         console.log(error);
         return error;
@@ -97,7 +132,6 @@ async function searchByScore(answers) {
     }
 }
 
-
 function updateFilters(filters, answer) {
     var fieldNames = Object.keys(answer);
     for (var i = 0; i < fieldNames.length; i++) {
@@ -108,7 +142,6 @@ function updateFilters(filters, answer) {
     }
     return filters;
 }
-
 
 async function getComputerByFiltersQuery(filters) {
     const computers = await Computer.find({
@@ -123,6 +156,7 @@ async function getComputerByFiltersQuery(filters) {
     });
     return computers;
 }
+
 /**
  * busca la computadora que coumple con los requistos minimos y maximos.
  * @param computer
@@ -137,6 +171,7 @@ async function getComputerByFiltersQueryMin(filters) {
         .sort({ "scores.processorScore": 1, "scores.ramScore": 1, "scores.storageScore": 1, "scores.graphicsCardScore": 1 });
         return orderByComputerByPromedio(computers);
 }
+
 /**
  * Calcula y ordena las computadores por scores.
  * @param {array} computers 
@@ -167,6 +202,7 @@ function orderByComputerByPromedio(computers) {
 function orderByDesc(promedios) {
     return promedios.sort(function (a, b) { return b.avg - a.avg });
 }
+
 /**
  * Calcula el promedio de los score de  computadoras.
  * @param {Computer.scores} scores 
@@ -174,6 +210,7 @@ function orderByDesc(promedios) {
 function getAvg(scores) {
     return ((scores.processorScore + scores.ramScore + scores.storageScore + scores.graphicsCardScore) / 4)
 }
+
 /**
  * Generate computer's score based on the full specification.
  * @param computer
@@ -193,8 +230,6 @@ function getScoring(computer) {
         return error;
     }
 }
-
-
 
 /**
  * It generates processor scoring based on the processor's specification.
@@ -365,8 +400,6 @@ function getProcessorScoring(processorSpecs, computerType) {
     }
 }
 
-
-
 /**
  * It generates ram scoring based on the ram's specification.
  * @param ramSpecs
@@ -497,8 +530,6 @@ function getRamScoring(ramSpecs, computerType) {
         return error;
     }
 }
-
-
 
 /**
  * It generates storage scoring based on the storage's specification.
@@ -716,8 +747,6 @@ function getStorageScoring(storageSpecs, computerType) {
     }
 }
 
-
-
 /**
  * It generates graphics card scoring based on the graphic card's specification.
  * @param graphicSpecs
@@ -852,11 +881,11 @@ function getGraphicsCardScoring(graphicSpecs, computerType) {
 
 }
 
-
 module.exports = {
     create,
     get,
     update,
     search,
+    addComment,
     searchByScore
 };

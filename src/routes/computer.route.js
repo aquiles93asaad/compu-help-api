@@ -11,6 +11,7 @@ router.route('').post(asyncHandler(create));
 router.route('/:id').get(asyncHandler(get));
 router.route('').put(asyncHandler(update));
 router.route('/search').post(asyncHandler(search));
+router.route('/addComment').post(asyncHandler(addComment));
 router.route('/search-by-score').post(asyncHandler(searchByScore));
 //router.route('/:id').post(asyncHandler(remove));
 
@@ -39,10 +40,16 @@ async function search(req, res) {
 }
 
 async function update(req, res) {
+    req.body.company['modifiedAt'] = new Date();
+    req.body.company['modifiedBy'] = req.user._id;
     const computer = await computerCtrl.update(req.body.computer);
     res.json({ computer });
 }
 
+async function addComment(req, res) {
+    const computer = await computerCtrl.addComment(req.body.comment, req.body.computerId);
+    res.json({ computer });
+}
 
 async function searchByScore(req, res) {
     console.log(req.body);

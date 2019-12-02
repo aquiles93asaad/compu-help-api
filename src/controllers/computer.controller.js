@@ -165,11 +165,11 @@ async function getComputerByFiltersQuery(filters) {
 */
 async function getComputerByFiltersQueryMinOr(filters) {
     const computers = await Computer.find({"$or":[
-        "scores.processorScore": { $gte: filters.processorMinScore },
-        "scores.ramScore": { $gte: filters.ramMinScore },
-        "scores.storageScore": { $gte: filters.storageMinScore },
-        "scores.graphicsCardScore": { $gte: filters.graphicsCardMinScore }]})
-        .sort({ "scores.processorScore": 1, "scores.ramScore": 1, "scores.storageScore": 1, "scores.graphicsCardScore": 1 });
+        { "scores.processorScore": { $gte: filters.processorMinScore} },
+        { "scores.ramScore": { $gte: filters.ramMinScore} },
+        { "scores.storageScore": { $gte: filters.storageMinScore} },
+        { "scores.graphicsCardScore": { $gte: filters.graphicsCardMinScore} }
+    ]}).sort({ "scores.processorScore": 1, "scores.ramScore": 1, "scores.storageScore": 1, "scores.graphicsCardScore": 1 });
         return orderByComputerByPromedio(computers);
 }
 

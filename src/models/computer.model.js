@@ -27,6 +27,18 @@ const ComputerSchema = new mongoose.Schema({
         url: String,
         price: Number
     }],
+    rating: {
+        type: Number
+    },
+    comments: [{
+        comment: String,
+        rating: Number,
+        date: Date,
+        user: {
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    }],
     specifications: {
         processor: {
             brand: {

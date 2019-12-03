@@ -36,6 +36,8 @@ async function search(req, res) {
 }
 
 async function update(req, res) {
+    req.body.company['modifiedAt'] = new Date();
+    req.body.company['modifiedBy'] = req.user._id;
     const question = await questionCtrl.update(req.body.question);
     res.json({ question });
 }

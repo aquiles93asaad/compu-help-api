@@ -123,10 +123,11 @@ async function searchByScore(answers) {
             "graphicsCardMaxScore": 0
         };
         for (var i = 0; i < answers.length; i++) {
+            console.log(answers[i]);
             filters = await updateFilters(filters, answers[i]);
         }   
-        //return getComputerByFiltersQueryMin(filters);//version por filtro.
-        return getComputerByFiltersQueryMinOr(filters);//version por filtro.
+        return getComputerByFiltersQueryMin(filters);//version por filtro.
+        //return getComputerByFiltersQueryMinOr(filters);//version por filtro.
     } catch (error) {
         console.log(error);
         return error;

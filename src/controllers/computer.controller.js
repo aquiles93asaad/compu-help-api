@@ -1,5 +1,6 @@
 const Computer = require('../models/computer.model');
 const Question = require('../models/question.model');
+const searchHistoryCtrl = require('./search-history.controller');
 
 /**
  * Creates a Computer.
@@ -110,8 +111,19 @@ async function addComment(comment, computerId) {
  * @param filters Filters
  * @returns Array of Computer
 */
-async function searchByScore(answers) {
+async function searchByScore(answers, usageProfiles, type, user, isNewSearch) {
     try {
+        if (typeof user !== 'undefined' && user !== null && isNewSearch) {
+            const searchHistory = {
+                type,
+                usageProfiles,
+                user: user._id,
+                answers
+            };
+
+            await searchHistoryCtrl.create(searchHistory);
+        }
+
         var filters = {
             "processorMinScore": 0,
             "processorMaxScore": 0,

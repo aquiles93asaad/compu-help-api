@@ -16,13 +16,13 @@ async function create(searchHistory) {
 }
 
 /**
- * Get a searchHistory by Id.
+ * Deletes a searchHistory by Id.
  * @param id string - ObjectId
- * @returns SearchHistory
+ * @returns
 */
-async function get(id) {
+async function remove(id) {
     try {
-        const searchHistory = await SearchHistory.findOne({
+        const searchHistory = await SearchHistory.deleteOne({
             '_id': id
         });
         return searchHistory;
@@ -32,27 +32,7 @@ async function get(id) {
     }
 }
 
-/**
- * Updates a searchHistory data and returns the updated searchHistory
- * @param searchHistory SearchHistory
- * @returns SearchHistory
-*/
-async function update(searchHistory) {
-    try {
-        const updatedSearchHistory = await SearchHistory.findOneAndUpdate(
-            { _id: searchHistory._id },
-            searchHistory,
-            { new: true }
-        );
-        return updatedSearchHistory;
-    } catch(error) {
-        console.log(error);
-        return error;
-    }
-}
-
 module.exports = {
     create,
-    get,
-    update,
+    remove,
 };

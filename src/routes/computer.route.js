@@ -53,7 +53,7 @@ async function addComment(req, res) {
 
 async function searchByScore(req, res) {
     console.log(req.body);
-    const computers = await computerCtrl.searchByScore(req.body.answers);
+    const computers = await computerCtrl.searchByScore(req.body.answers, req.body.usageProfiles, req.body.type, req.user, req.body.isNewSearch);
     res.json({computers});
 }
 

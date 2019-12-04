@@ -6,6 +6,7 @@ const notificacionRoutes = require('./notificacion.route');
 const questionRoutes = require('./question.route');
 const usageProfileRoutes = require('./usage-profile.route');
 const userRoutes = require('./user.route');
+const searchHistoryRoutes = require('./search-history.route');
 
 const router = express.Router(); // eslint-disable-line new-cap
 
@@ -20,5 +21,6 @@ router.use('/notificacion', notificacionRoutes);
 router.use('/question', questionRoutes);
 router.use('/usage-profile', usageProfileRoutes);
 router.use('/user', userRoutes);
+router.use('/search-history', searchHistoryRoutes);
 
 module.exports = router;

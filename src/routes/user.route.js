@@ -33,8 +33,8 @@ async function get(req, res) {
 }
 
 async function update(req, res) {
-    req.body.company['modifiedAt'] = new Date();
-    req.body.company['modifiedBy'] = req.user._id;
+    req.body.user['modifiedAt'] = new Date();
+    req.body.user['modifiedBy'] = req.user._id;
     const user = await userCtrl.update(req.body.user);
     res.json({ user });
 }

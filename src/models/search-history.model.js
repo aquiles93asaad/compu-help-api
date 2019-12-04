@@ -15,13 +15,16 @@ const SearchHistorySchema = new mongoose.Schema({
         ref: 'User'
     },
     answers: [{
-        question: {
-            type: Schema.Types.ObjectId,
-            ref: 'Question'
-        },
-        value: {
-            type: String
-        }
+        label: String,
+        value: String | Boolean,
+        processorMinScore: Number,
+        processorMaxScore: Number,
+        ramMinScore: Number,
+        ramMaxScore: Number,
+        storageMinScore: Number,
+        storageMaxScore: Number,
+        graphicsCardMinScore: Number,
+        graphicsCardMaxScore: Number
     }],
 }, {
     versionKey: false

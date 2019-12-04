@@ -7,10 +7,8 @@ const requireAuthenticationList = [
     'DELETE /api/computer',
     'POST /api/addComment',
     
-    'POST /api/notificacion',
-    'GET /api/notificacion',
-    'PUT /api/notificacion',
-    'DELETE /api/notificacion',
+    'POST /api/search-history',
+    'DELETE /api/search-history',
 
     'POST /api/question',
     'PUT /api/question',
@@ -25,6 +23,8 @@ const requireAuthenticationList = [
     'PUT /api/user',
     'DELETE /api/user',
     'POST /api/user/setFavourites',
+
+
 ];
 
 const requireAuthentication = function(request, response, next) {

@@ -62,12 +62,18 @@ async function get(reqUser, filters) {
 
 async function update(userData) {
     try {
-        if(userData.password) {
+        let user = await User.findById(userData._id);
+
+        if(userData.password && userData.oldPassword) {
+            if (!bcrypt.compareSync(userData.password, user.hashedPassword)) {
+                return null;
+            }
+
             userData.hashedPassword = bcrypt.hashSync(userData.password, 10);
             delete userData.password
         }
 
-        let user = await User.findOneAndUpdate(
+        user = await User.findOneAndUpdate(
             { _id: userData._id },
             userData,
             { new: true },

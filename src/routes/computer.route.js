@@ -12,6 +12,7 @@ router.route('/:id').get(asyncHandler(get));
 router.route('').put(asyncHandler(update));
 router.route('/search').post(asyncHandler(search));
 router.route('/addComment').post(asyncHandler(addComment));
+router.route('/removeComment').post(asyncHandler(removeComment));
 router.route('/search-by-score').post(asyncHandler(searchByScore));
 //router.route('/:id').post(asyncHandler(remove));
 
@@ -48,6 +49,11 @@ async function update(req, res) {
 
 async function addComment(req, res) {
     const computer = await computerCtrl.addComment(req.body.comment, req.body.computerId);
+    res.json({ computer });
+}
+
+async function removeComment(req, res) {
+    const computer = await computerCtrl.addComment(req.body.commentId, req.body.computerId);
     res.json({ computer });
 }
 

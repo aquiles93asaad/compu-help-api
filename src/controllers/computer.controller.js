@@ -1,5 +1,5 @@
 const Computer = require('../models/computer.model');
-const Question = require('../models/question.model');
+const User = require('../models/user.model');
 const searchHistoryCtrl = require('./search-history.controller');
 
 /**
@@ -28,7 +28,7 @@ async function get(id) {
     try {
         const computer = await Computer.findOne({
             '_id': id
-        });
+        }).populate({ path: 'comments.user',  model: User, select: 'name lastName image'});
         return computer;
     } catch (error) {
         console.log(error);
@@ -72,7 +72,7 @@ async function search(filters) {
 
 /**
  * Add a comment to a computer
- * @returns computer with the comment
+ * @returns computer with the comments
 */
 async function addComment(comment, computerId) {
     try {
@@ -85,20 +85,51 @@ async function addComment(comment, computerId) {
             averageRating += computer.comments[i].rating;
         }
         averageRating += comment.rating;
-        console.log(averageRating);
         averageRating = averageRating/(computer.comments.length + 1);
-        console.log(averageRating);
         averageRating = averageRating.toFixed(2);
-        console.log(averageRating);
         averageRating = Number(averageRating);
-        console.log(averageRating);
         computer = await Computer.findOneAndUpdate(
             { _id: computerId},
             {
                 $push: { comments: comment},
                 rating: averageRating
+            },
+            { new: true }
+        ).populate({ path: 'comments.user',  model: User, select: 'name lastName image'});
+        return computer;
+    } catch (error) {
+        console.log(error);
+        return error;
+    }
+}
+
+/**
+ * Removes a comment from a computer
+ * @returns computer with the comments
+*/
+async function addComment(commentId, computerId) {
+    try {
+        let computer = await Computer.findOne({
+            '_id': computerId
+        });
+
+        let averageRating = 0;
+        for (let i = 0; i < computer.comments.length; i++) {
+            if (commentId === computer.comments[i]._id) {
+                averageRating += computer.comments[i].rating;
             }
-        );
+        }
+        averageRating = averageRating/(computer.comments.length + 1);
+        averageRating = averageRating.toFixed(2);
+        averageRating = Number(averageRating);
+        computer = await Computer.findOneAndUpdate(
+            { _id: computerId},
+            {
+                $pull: { comments: {'_id': { $in: [commentId] }}},
+                rating: averageRating
+            },
+            { new: true }
+        ).populate({ path: 'comments.user',  model: User, select: 'name lastName image'});
         return computer;
     } catch (error) {
         console.log(error);

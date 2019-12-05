@@ -65,7 +65,7 @@ async function update(userData) {
         let user = await User.findById(userData._id);
 
         if(userData.password && userData.oldPassword) {
-            if (!bcrypt.compareSync(userData.password, user.hashedPassword)) {
+            if (!bcrypt.compareSync(userData.oldPassword, user.hashedPassword)) {
                 return null;
             }
 

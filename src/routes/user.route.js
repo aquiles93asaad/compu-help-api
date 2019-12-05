@@ -8,9 +8,9 @@ const requireAuth = require('../middleware/require-auth');
 router.use(requireAuth);
 
 router.route('/check').post(asyncHandler(check));
-router.route('/create').post(asyncHandler(create));
-router.route('/get').post(asyncHandler(get));
-router.route('/update').put(asyncHandler(update));
+router.route('').post(asyncHandler(create));
+router.route('').post(asyncHandler(get));
+router.route('').put(asyncHandler(update));
 router.route('/setFavourites').post(asyncHandler(setFavourites));
 
 module.exports = router;

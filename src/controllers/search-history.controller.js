@@ -1,4 +1,5 @@
 const SearchHistory = require('../models/search-history.model');
+const UsageProfile = require('../models/usage-profile.model');
 
 /**
  * Creates a SearchHistory.
@@ -42,7 +43,7 @@ async function getUserSearchHistory(userId) {
     try {
         const searchHistories = await SearchHistory.find({
             'user': userId
-        });
+        }).populate({ path: 'usageProfiles', model: UsageProfile, select: 'name label description' });
         return searchHistories;
     } catch(error) {
         console.log(error);

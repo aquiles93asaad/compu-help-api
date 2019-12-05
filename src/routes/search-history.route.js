@@ -13,8 +13,8 @@ router.route('/:id').delete(asyncHandler(remove));
 module.exports = router;
 
 async function getUserSearchHistory(req, res) {
-    const searchHisrory = await searchHisroryCtrl.getUserSearchHistory(req.user._id);
-    res.json({ searchHisrory });
+    const searchHistory = await searchHisroryCtrl.getUserSearchHistory(req.user._id);
+    res.json({ searchHistory });
 }
 
 async function remove(req, res) {

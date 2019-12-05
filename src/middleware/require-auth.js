@@ -7,7 +7,7 @@ const requireAuthenticationList = [
     'DELETE /api/computer',
     'POST /api/addComment',
     
-    'GET /api/user-search-history',
+    'GET /api/search-history/user-search-history',
     'DELETE /api/search-history',
 
     'POST /api/question',
@@ -23,16 +23,16 @@ const requireAuthenticationList = [
     'PUT /api/user',
     'DELETE /api/user',
     'POST /api/user/setFavourites',
-
-
 ];
 
 const requireAuthentication = function(request, response, next) {
     let route = `${request.method} ${request.originalUrl}`;
-    
+
     if (_.indexOf(requireAuthenticationList, route) === -1) {
+        console.log('no paso');
         next();
     } else {
+        console.log('paso');
         passport.authenticate('jwt', { session: false })(request, response, next);
     }
 }

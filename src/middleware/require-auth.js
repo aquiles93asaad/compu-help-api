@@ -7,7 +7,7 @@ const requireAuthenticationList = [
     'DELETE /api/computer',
     'POST /api/addComment',
     
-    'POST /api/search-history',
+    'GET /api/user-search-history',
     'DELETE /api/search-history',
 
     'POST /api/question',

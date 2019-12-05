@@ -26,6 +26,21 @@ const SearchHistorySchema = new mongoose.Schema({
         graphicsCardMinScore: Number,
         graphicsCardMaxScore: Number
     }],
+    createdBy: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    modifiedBy: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    modifiedAt: {
+        type: Date
+    }
 }, {
     versionKey: false
 });

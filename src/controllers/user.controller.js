@@ -70,7 +70,6 @@ async function update(userData) {
             }
 
             userData.hashedPassword = bcrypt.hashSync(userData.password, 10);
-            delete userData.password
         }
 
         user = await User.findOneAndUpdate(

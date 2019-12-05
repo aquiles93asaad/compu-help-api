@@ -7,13 +7,13 @@ const requireAuth = require('../middleware/require-auth');
 
 router.use(requireAuth);
 
-router.route('').post(asyncHandler(create));
+router.route('/user-search-history').get(asyncHandler(getUserSearchHistory));
 router.route('/:id').delete(asyncHandler(remove));
 
 module.exports = router;
 
-async function create(req, res) {
-    const searchHisrory = await searchHisroryCtrl.create(req.body.searchHisrory);
+async function getUserSearchHistory(req, res) {
+    const searchHisrory = await searchHisroryCtrl.getUserSearchHistory(req.user._id);
     res.json({ searchHisrory });
 }
 

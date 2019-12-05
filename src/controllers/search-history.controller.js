@@ -8,6 +8,7 @@ const SearchHistory = require('../models/search-history.model');
 async function create(searchHistory) {
     try {
         const createdSearchHistory = await SearchHistory(searchHistory).save();
+        console.log(createdSearchHistory);
         return createdSearchHistory;
     } catch(error) {
         console.log(error);
@@ -32,7 +33,25 @@ async function remove(id) {
     }
 }
 
+/**
+ * get a user serach history
+ * @param id string - ObjectId
+ * @returns
+*/
+async function getUserSearchHistory(userId) {
+    try {
+        const searchHistories = await SearchHistory.find({
+            'user': userId
+        });
+        return searchHistories;
+    } catch(error) {
+        console.log(error);
+        return error;
+    }
+}
+
 module.exports = {
     create,
     remove,
+    getUserSearchHistory,
 };

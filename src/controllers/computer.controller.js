@@ -111,13 +111,14 @@ async function addComment(comment, computerId) {
  * @param filters Filters
  * @returns Array of Computer
 */
-async function searchByScore(answers, usageProfiles, type, user, isNewSearch) {
+async function searchByScore(answers, usageProfiles, type, userId, isNewSearch) {
     try {
-        if (typeof user !== 'undefined' && user !== null && isNewSearch) {
+        if (typeof userId !== 'undefined' && userId !== null && isNewSearch) {
+            console.log('hola');
             const searchHistory = {
                 type,
                 usageProfiles,
-                user: user._id,
+                user: userId,
                 answers
             };
 
@@ -135,11 +136,13 @@ async function searchByScore(answers, usageProfiles, type, user, isNewSearch) {
             "graphicsCardMaxScore": 0
         };
         for (var i = 0; i < answers.length; i++) {
-            console.log(answers[i]);
+            // console.log(answers[i]);
             filters = await updateFilters(filters, answers[i]);
-        }   
-        return getComputerByFiltersQueryMin(filters);//version por filtro.
-        //return getComputerByFiltersQueryMinOr(filters);//version por filtro.
+        }
+        console.log(filters);
+        return getComputerByFiltersQuery(filters, type);
+        //return getComputerByFiltersQueryMin(filters, type);
+        //return getComputerByFiltersQueryMinOr(filters, type);
     } catch (error) {
         console.log(error);
         return error;
@@ -157,18 +160,51 @@ function updateFilters(filters, answer) {
     return filters;
 }
 
-async function getComputerByFiltersQuery(filters) {
-    const computers = await Computer.find({
-        "scores.processorScore": { $gte: filters.processorMinScore },
-        "scores.processorScore": { $lte: filters.processorMaxScore },
-        "scores.ramScore": { $gte: filters.ramMinScore },
-        "scores.ramScore": { $lte: filters.ramMaxScore },
-        "scores.storageScore": { $gte: filters.storageMinScore },
-        "scores.storageScore": { $lte: filters.storageMaxScore },
-        "scores.graphicsCardScore": { $gte: filters.graphicsCardMinScore },
-        "scores.graphicsCardScore": { $lte: filters.graphicsCardMaxScore }
+async function getComputerByFiltersQuery(filters, type) {
+    let computers = await Computer.find({
+        "scores.processorScore": { $gte: filters.processorMinScore, $lte: filters.processorMaxScore },
+        // "scores.processorScore": { $lte: filters.processorMaxScore },
+        "scores.ramScore": { $gte: filters.ramMinScore, $lte: filters.ramMaxScore },
+        // "scores.ramScore": { $lte: filters.ramMaxScore },
+        "scores.storageScore": { $gte: filters.storageMinScore, $lte: filters.storageMaxScore },
+        // "scores.storageScore": { $lte: filters.storageMaxScore },
+        "scores.graphicsCardScore": { $gte: filters.graphicsCardMinScore, $lte: filters.graphicsCardMaxScore },
+        // "scores.graphicsCardScore": { $lte: filters.graphicsCardMaxScore },
+        'computerType': type
+    }).sort({ "scores.processorScore": 1, "scores.ramScore": 1, "scores.storageScore": 1, "scores.graphicsCardScore": 1 });
+    console.log(computers);
+    if (computers.length === 0) {
+        const orderedFilters = orderFiltersByMinScore(filters);
+        // console.log(orderedFilters);
+        for (let i = 0; i < orderedFilters.length; i++) {
+            const findObject = {'computerType': type};
+            findObject['scores.' + orderedFilters[i].spec + 'Score'] = { $gte: orderedFilters[i].min, $lte: orderedFilters[i].max };
+            computers = await Computer.find(findObject);
+            if (computers.length !== 0) {
+                break;
+            }
+        }
+    }
+    // console.log(computers);
+    return orderByComputerByPromedio(computers, filters);
+}
+
+function orderFiltersByMinScore(filters) {
+    const orderedFilters = [];
+    for (const filter in filters) {
+        if (filters.hasOwnProperty(filter) && filter.indexOf('Min') !== -1) {
+            const filterItem = {
+                min: filters[filter],
+                max: filters[filter.substring(0, filter.indexOf('Min')) + 'MaxScore'],
+                spec: filter.substring(0, filter.indexOf('Min'))
+            }
+            orderedFilters.push(filterItem);
+        }
+    }
+
+    return orderedFilters.sort((a, b) => {
+        return b.min - a.min;
     });
-    return computers;
 }
 
 /**
@@ -176,41 +212,46 @@ async function getComputerByFiltersQuery(filters) {
  * @param computer
  * @returns scores
 */
-async function getComputerByFiltersQueryMinOr(filters) {
-    const computers = await Computer.find({"$or":[
-        { "scores.processorScore": { $gte: filters.processorMinScore} },
-        { "scores.ramScore": { $gte: filters.ramMinScore} },
-        { "scores.storageScore": { $gte: filters.storageMinScore} },
-        { "scores.graphicsCardScore": { $gte: filters.graphicsCardMinScore} }
-    ]}).sort({ "scores.processorScore": 1, "scores.ramScore": 1, "scores.storageScore": 1, "scores.graphicsCardScore": 1 });
+async function getComputerByFiltersQueryMinOr(filters, type) {
+    const computers = await Computer.find({
+        "$or":[
+            { "scores.processorScore": { $gte: filters.processorMinScore} },
+            { "scores.ramScore": { $gte: filters.ramMinScore} },
+            { "scores.storageScore": { $gte: filters.storageMinScore} },
+            { "scores.graphicsCardScore": { $gte: filters.graphicsCardMinScore} },
+        ],
+        'computerType': type
+    }).sort({ "scores.processorScore": 1, "scores.ramScore": 1, "scores.storageScore": 1, "scores.graphicsCardScore": 1 });
         return orderByComputerByPromedio(computers);
 }
 
-async function getComputerByFiltersQueryMin(filters) {
+async function getComputerByFiltersQueryMin(filters, type) {
     const computers = await Computer.find({
         "scores.processorScore": { $gte: filters.processorMinScore },
         "scores.ramScore": { $gte: filters.ramMinScore },
         "scores.storageScore": { $gte: filters.storageMinScore },
-        "scores.graphicsCardScore": { $gte: filters.graphicsCardMinScore }})
-        .sort({ "scores.processorScore": 1, "scores.ramScore": 1, "scores.storageScore": 1, "scores.graphicsCardScore": 1 });
-        console.log(computers);
-        return orderByComputerByPromedio(computers);
+        "scores.graphicsCardScore": { $gte: filters.graphicsCardMinScore },
+        'computerType': type
+    }).sort({ "scores.processorScore": 1, "scores.ramScore": 1, "scores.storageScore": 1, "scores.graphicsCardScore": 1 });
+    console.log(computers);
+    return orderByComputerByPromedio(computers);
 }
 
 /**
  * Calcula y ordena las computadores por scores.
  * @param {array} computers 
  */
-function orderByComputerByPromedio(computers) {
+function orderByComputerByPromedio(computers, filters) {
     promedios = [];
     for (let index = 0; index < computers.length; index++) {
         const element = computers[index];
         var computerAvg = { "avg": 0, "computer": Computer }
-        computerAvg.avg = getAvg(element.scores);
+        computerAvg.avg = getAvg(element.scores, filters);
         computerAvg.computer = element;
         promedios[index] = computerAvg;
     }
     computers = [];
+    // console.log(promedios);
     i = 0;
     orderByDesc(promedios).forEach(element => {
         console.log("Promedios: " + element.avg + " computer: " + element.computer.name);
@@ -225,15 +266,25 @@ function orderByComputerByPromedio(computers) {
  * @param {computerAvg} promedios 
  */
 function orderByDesc(promedios) {
-    return promedios.sort(function (a, b) { return b.avg - a.avg });
+    return promedios.sort(function (a, b) { return a.avg - b.avg });
 }
 
 /**
  * Calcula el promedio de los score de  computadoras.
  * @param {Computer.scores} scores 
  */
-function getAvg(scores) {
-    return ((scores.processorScore + scores.ramScore + scores.storageScore + scores.graphicsCardScore) / 4)
+function getAvg(scores, filters) {
+    let averages = {};
+    for (const filter in filters) {
+        if (filters.hasOwnProperty(filter) && filter.indexOf('Min') !== -1) {
+            const filterType = filter.substring(0, filter.indexOf('Min'));
+            const filterAvg = (filters[filter] + filters[filterType + 'MaxScore']) / 2;
+            averages[filterType] = Math.abs(scores[filterType + 'Score'] - filterAvg);
+        }
+    }
+    // console.log(averages);
+    return ((averages.processor + averages.ram + averages.storage + averages.graphicsCard) / 4)
+    //return ((scores.processorScore + scores.ramScore + scores.storageScore + scores.graphicsCardScore) / 4)
 }
 
 /**

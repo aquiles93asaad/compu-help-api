@@ -107,7 +107,7 @@ async function addComment(comment, computerId) {
  * Removes a comment from a computer
  * @returns computer with the comments
 */
-async function addComment(commentId, computerId) {
+async function removeComment(commentId, computerId) {
     try {
         let computer = await Computer.findOne({
             '_id': computerId
@@ -119,9 +119,11 @@ async function addComment(commentId, computerId) {
                 averageRating += computer.comments[i].rating;
             }
         }
-        averageRating = averageRating/(computer.comments.length + 1);
-        averageRating = averageRating.toFixed(2);
-        averageRating = Number(averageRating);
+        if (averageRating !== 0) {
+            averageRating = averageRating/(computer.comments.length + 1);
+            averageRating = averageRating.toFixed(2);
+            averageRating = Number(averageRating);
+        }
         computer = await Computer.findOneAndUpdate(
             { _id: computerId},
             {
@@ -994,5 +996,6 @@ module.exports = {
     update,
     search,
     addComment,
+    removeComment,
     searchByScore
 };

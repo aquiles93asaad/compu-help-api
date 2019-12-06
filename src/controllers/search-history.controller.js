@@ -43,7 +43,7 @@ async function getUserSearchHistory(userId) {
     try {
         const searchHistories = await SearchHistory.find({
             'user': userId
-        }).populate({ path: 'usageProfiles', model: UsageProfile, select: 'name label description' });
+        }).populate({ path: 'usageProfiles', model: UsageProfile, select: 'name label description answers' });
         return searchHistories;
     } catch(error) {
         console.log(error);

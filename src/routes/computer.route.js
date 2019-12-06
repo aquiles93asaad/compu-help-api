@@ -53,7 +53,7 @@ async function addComment(req, res) {
 }
 
 async function removeComment(req, res) {
-    const computer = await computerCtrl.addComment(req.body.commentId, req.body.computerId);
+    const computer = await computerCtrl.removeComment(req.body.commentId, req.body.computerId);
     res.json({ computer });
 }
 
